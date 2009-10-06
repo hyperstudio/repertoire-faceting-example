@@ -30,7 +30,7 @@ class Nobelists < Application
   end
 
   def results(search, filter={})
-    provides :html
+    provides :html, :js
     
     @search = search
     search = "%#{search}%"

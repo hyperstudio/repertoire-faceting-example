@@ -6,6 +6,7 @@
 #discipline .values { width: 240px; height: 230px; overflow: hidden; }
 #nobel_year .values { width: 240px; height: 230px; overflow: hidden; }
 #birthdate .values { width: 240px; height: 120px; overflow: hidden; }
+#results, #timeline { width: 570px; height: 570px; clear: none; float: left;}
 </style>
 
 <script>
@@ -20,7 +21,6 @@ $().ready(function() {
   $('#discipline').bar_facet({ height: 230, width: 230 });
   $('#nobel_year').donut_facet({ height: 230, width: 230, thickness: 15 });
   $('#birthdate').scatter_facet({ height: 120, width: 230, max:14 });
-  $('#results').results();
 
   // example of injecting a control into a facet
   //   here we add a multivalued facet control that shows how many values are selected and allows a 'clear all'
@@ -62,10 +62,27 @@ $().ready(function() {
         state.order_by = order_by_count ? 'count' : 'alphanumeric';
       }
     });
+    
+    // example of a results widget that injects its own content (in this case, a visualization of nobelists)
+    $('#timeline').results({ 
+      type: 'json',
+      injectors: {
+        'div': function(self, nobelists) {
+          visualize_nobelists(nobelists, $(this),  { height: 550, width: 550 });  // see application.js for visualization function
+        }
+      }
+    });
+    
+    // regular list view
+    $('#results').results({ type: 'html' });
+    $('#results').hide();
+    
+    // script to toggle results views
+    $('#timeline').click(function() {  $('#results').show(); $('#timeline').hide(); });
+    $('#results').click(function() {   $('#results').hide(); $('#timeline').show(); });
 });
-</script>
 
-<!-- from here down, this example is identical to the default nobelists page -->
+</script>
 
 <a style='float:right; margin-right:10px' href='<%= url(:action => :index) %>'>Default facets</a>
 
@@ -78,6 +95,7 @@ Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
     <div id='nobel_year' class='facet visual' title='Year Awarded'></div>
   </div>
   <div id='results'></div>
+  <div id='timeline'></div>
   <div class='right'>
     <div id='degree' class='facet' title='Degree at MIT'></div>
     <div id='birth_place' class='nested_facet' title='Birth Place'></div>
