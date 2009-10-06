@@ -33,6 +33,9 @@ Merb::Router.prepare do
   match('/:controller/counts/:facet').to(:action => 'counts')
   match('/:controller/results').to(:action => 'results')
   
+  # for the client-ordered facet count example
+  match('/:controller/counts_with_sorting/:facet').to(:action => 'counts_with_sorting')
+  
   # Adds the required routes for merb-auth using the password slice
   # slice(:merb_auth_slice_password, :name_prefix => nil, :path_prefix => "")
 
@@ -43,5 +46,5 @@ Merb::Router.prepare do
   default_routes
   
   # Change this for your home page to be available at /
-  # match('/').to(:controller => 'whatever', :action =>'index')
+  match('/').to(:controller => 'nobelists', :action =>'index')
 end

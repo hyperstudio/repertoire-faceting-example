@@ -1,0 +1,86 @@
+<script src="/javascripts/rep.faceting.js"></script>
+<script src="/javascripts/protovis-d3.0.js"></script>
+<script src="/javascripts/rep.protovis-facets.js"></script>
+
+<style>
+#discipline .values { width: 240px; height: 230px; overflow: hidden; }
+#nobel_year .values { width: 240px; height: 230px; overflow: hidden; }
+#birthdate .values { width: 240px; height: 120px; overflow: hidden; }
+</style>
+
+<script>
+$().ready(function() {
+  $('#nobelists').facet_context(function() {
+    return { 
+      search: $("#search").val() 
+    };
+  });
+  
+  // examples of visualization facets
+  $('#discipline').bar_facet({ height: 230, width: 230 });
+  $('#nobel_year').donut_facet({ height: 230, width: 230, thickness: 15 });
+  $('#birthdate').scatter_facet({ height: 120, width: 230, max:14 });
+  $('#results').results();
+
+  // example of injecting a control into a facet
+  //   here we add a multivalued facet control that shows how many values are selected and allows a 'clear all'
+  $('#degree').facet({
+      injectors: {
+        '.title .controls' : function(self, data) { 
+          $(this).append('<span class="clear_control">(' + self.refinements(self.facet_name()).length + ') [x]</span>'); 
+        }
+      },
+      handlers: {
+        'click!.clear_control' : function(self) {
+          self.refinements(self.facet_name()).length = 0;
+          self.state_changed();
+          return false;
+        }
+      }
+    });
+    
+  //   here we add a count/alphanumeric sort control - note additional data sent to server and new webservice
+  //   (.... should this be core functionality?)
+  var order_by_count = true;
+  $('#birth_place').nested_facet({
+      url: '/nobelists/counts_with_sorting/birth_place',
+      injectors: {
+        '.title .controls' : function(self, data) {
+          if (order_by_count) $(this).append('<span class="sort">1-9</span>')
+          else                $(this).append('<span class="sort">a-z</span>')    
+        }
+      },
+      handlers: {
+        'click!.sort' : function(self) {
+          order_by_count = !order_by_count;
+          self.reload()       // only need to update this facet
+          return false;
+        }
+      },
+      pre_update: function(state) {
+        // extra state to send to server
+        state.order_by = order_by_count ? 'count' : 'alphanumeric';
+      }
+    });
+});
+</script>
+
+<!-- from here down, this example is identical to the default nobelists page -->
+
+<a style='float:right; margin-right:10px' href='<%= url(:action => :index) %>'>Default facets</a>
+
+<form>
+Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
+</form> 
+<div id='nobelists'>
+  <div class='left'>
+    <div id='discipline' class='facet'></div>
+    <div id='nobel_year' class='facet visual' title='Year Awarded'></div>
+  </div>
+  <div id='results'></div>
+  <div class='right'>
+    <div id='degree' class='facet' title='Degree at MIT'></div>
+    <div id='birth_place' class='nested_facet' title='Birth Place'></div>
+    <div id='birthdate' class='facet' title='Birth Decade'></div>
+  </div>
+</div>

@@ -1,26 +1,32 @@
-<script language="javascript">
-$().ready(function() { 
-   $("#discipline").facet('discipline',   '/nobelists/counts/discipline');
-   $("#nobel_year").facet('nobel_year',   '/nobelists/counts/nobel_year',  { title : 'Year Awarded' });
-   $("#birth_place").facet('birth_place', '/nobelists/counts/birth_place', { title : 'Birth Place', nested: true });
-   $("#degree").facet('degree',           '/nobelists/counts/degree');
-   $("#birthdate").facet('birthdate',     '/nobelists/counts/birthdate',   { nested: true });
-   $("#results").results(                 '/nobelists/results');
- });
+<script src="/javascripts/rep.faceting.js"></script>
+
+<script>
+$().ready(function() {
+  $('#nobelists').facet_context(function() {
+    return { 
+      search: $("#search").val() 
+    };
+  });
+  $('.facet').facet();
+  $('.nested_facet').nested_facet();
+  $('#results').results();
+});
 </script>
- 
+
+<a style='float:right; margin-right:10px' href='<%= url(:action => :visualize) %>'>Visual facets / Extension demos</a>
+
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form> 
-<div class='facet_refinement_context' id='nobelists'>
+<div id='nobelists'>
   <div class='left'>
-    <div id='discipline'></div>
-    <div id='nobel_year'></div>
-    <div id='degree'></div>
+    <div id='discipline' class='facet'></div>
+    <div id='nobel_year' class='facet' title='Year Awarded'></div>
+    <div id='degree' class='facet' title='Degree at MIT'></div>
   </div>
   <div id='results'></div>
   <div class='right'>
-    <div id='birth_place'></div>
-    <div id='birthdate'></div>
+    <div id='birth_place' class='nested_facet' title='Birth Place'></div>
+    <div id='birthdate' class='facet' title='Birth Decade'></div>
   </div>
 </div>

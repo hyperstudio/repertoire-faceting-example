@@ -2,10 +2,12 @@ body {font-family: Trebuchet MS, Helvetica, Arial, sans serif; font-size: 10pt; 
 
 form { margin: 10px; }
 .left { float:left; clear: left; margin: 10px; }
-#results { float:left; clear: none; width: 450px;}
+#results { float:left; clear: none; width: 500px;}
 .right { float:left; clear: right; margin: 10px; }
 .nobelist { clear: both; margin: 10px; border: 1px black dotted; padding: 5px; }
 .nobelist img { float: left; margin: 5px; }
+
+.citizen { font-size: 9pt; }
 
 * {
   margin: 0px;

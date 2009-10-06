@@ -1,0 +1,27 @@
+<script src="/javascripts/rep.faceting.js"></script>
+
+<script language="javascript">
+$().ready(function() {
+  $('#citizens').facet_context(function() {
+    return { search: $("#search").val() };
+  });
+  $(".facet").facet();
+  $(".nested_facet").nested_facet();
+  $("#results").results();
+});
+</script>
+ 
+<form>
+Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
+</form>
+<div id='citizens'>
+  <div class='left'>
+    <div id='gender' class='facet'></div>
+    <div id='occupation' class='facet'></div>
+  </div>
+  <div id='results'></div>
+  <div class='right'>
+    <div id='birth_place' class='nested_facet' title='Birth Place'></div>
+    <div id='birthdate' class='facet'></div>
+  </div>
+</div>

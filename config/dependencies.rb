@@ -1,9 +1,9 @@
 # dependencies are generated using a strict version, don't forget to edit the dependency versions when upgrading.
 merb_gems_version = "1.1"
-dm_gems_version   = "0.10.0"
-do_gems_version   = "0.10.0"
+dm_gems_version   = ">=0.10.0"
+do_gems_version   = ">=0.10.0"
 
-dependency "repertoire_faceting", "0.3.2"
+dependency "repertoire_faceting", ">=0.3.2"
 
 # For more information about each component, please read http://wiki.merbivore.com/faqs/merb_components
 dependency "merb-core", merb_gems_version 
