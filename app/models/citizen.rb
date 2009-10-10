@@ -13,6 +13,6 @@ class Citizen
   
   is :faceted, :gender,                   
                :occupation,
-               :birth_place => :nested,
-               :birthdate => :nested
+               :birthdate,
+               :birth_place => :nested
 end
