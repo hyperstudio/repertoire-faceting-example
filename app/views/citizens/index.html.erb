@@ -1,3 +1,8 @@
+<style TYPE="text/css" media=screen>
+.rep .facet .values .value .label { left: 1.2em; }  /* extra space since numbers go up to 1,000,000 */
+</style>
+
+
 <script src="/javascripts/rep.faceting.js"></script>
 
 <script language="javascript">
@@ -10,7 +15,7 @@ $().ready(function() {
   $("#results").results();
 });
 </script>
- 
+
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form>
