@@ -3,10 +3,11 @@
   <head>
     <title>Fresh Merb App</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="/stylesheets/master.css" type="text/css" media="screen" charset="utf-8" />
-    <link rel="stylesheet" href="/stylesheets/rep.faceting.css" type="text/css" media="screen" charset="utf-8" />
-    <script src="/javascripts/jquery.js"></script>
-    <script src="/javascripts/application.js"></script>
+    <%= css_include_tag 'master.css' %>
+    <%= css_include_tag 'rep.faceting.css' %>
+
+    <%= js_include_tag 'jquery.js' %>
+    <%= js_include_tag 'application.js' %>
   </head>
   <body>
     <%#= message[:notice] %>

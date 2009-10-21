@@ -1,6 +1,6 @@
-<script src="/javascripts/rep.faceting.js"></script>
-<script src="/javascripts/protovis-d3.0.js"></script>
-<script src="/javascripts/rep.protovis-facets.js"></script>
+<%= js_include_tag 'rep.faceting.js' %>
+<%= js_include_tag 'protovis-d3.0.js' %>
+<%= js_include_tag 'rep.protovis-facets.js' %>
 
 <style>
 #discipline .values { width: 240px; height: 230px; overflow: hidden; }
@@ -11,6 +11,10 @@
 
 <script>
 $().ready(function() {
+  // only necessary if using sub-uris
+  rack_prefix         = '<%= ::Merb::Config[:path_prefix] %>';
+  repertoire.defaults = { path_prefix: rack_prefix };
+
   $('#nobelists').facet_context(function() {
     return { 
       search: $("#search").val() 
@@ -43,7 +47,7 @@ $().ready(function() {
   //   (.... should this be core functionality?)
   var order_by_count = true;
   $('#birth_place').nested_facet({
-      url: '/nobelists/counts_with_sorting/birth_place',
+      url: rack_prefix + '/nobelists/counts_with_sorting/birth_place',
       injectors: {
         '.title .controls' : function(self, data) {
           if (order_by_count) $(this).append('<span class="sort">1-9</span>')
@@ -84,7 +88,7 @@ $().ready(function() {
 
 </script>
 
-<a style='float:right; margin-right:10px' href='<%= url(:action => :index) %>'>Default facets</a>
+<a style='float:right; clear: right; margin-right:10px' href='<%= url(:action => :index) %>'>Default facets</a>
 
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>

@@ -2,11 +2,13 @@
 .rep .facet .values .value .label { left: 1.2em; }  /* extra space since numbers go up to 1,000,000 */
 </style>
 
-
-<script src="/javascripts/rep.faceting.js"></script>
+<%= js_include_tag 'rep.faceting.js' %>
 
 <script language="javascript">
 $().ready(function() {
+  // only necessary if using sub-uris
+  repertoire.defaults = { path_prefix: '<%= ::Merb::Config[:path_prefix] %>' };
+
   $('#citizens').facet_context(function() {
     return { search: $("#search").val() };
   });
@@ -15,6 +17,8 @@ $().ready(function() {
   $("#results").results();
 });
 </script>
+
+<a style='float:right; clear: right; margin-right:10px' href='<%= url(:controller => :nobelists) %>'>Default facets</a>
 
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
