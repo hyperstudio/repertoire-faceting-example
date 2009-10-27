@@ -1,5 +1,5 @@
 bundle_path "gems"
-# disable_system_gems 
+disable_system_gems 
 
 # dependencies are generated using a strict version, don't forget to edit the gem versions when upgrading.
 merb_gems_version = "1.1"
