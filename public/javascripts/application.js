@@ -1,5 +1,12 @@
 // Common JavaScript code across your application goes here.
 
+//= require "../stylesheets/master.css"
+
+//= require <rep.faceting>
+//= require <rep.protovis-facets>
+
+//= require <protovis>
+
 visualize_nobelists = function(nobelists, $elem, options) {
   var results_canvas = $elem[0];
 

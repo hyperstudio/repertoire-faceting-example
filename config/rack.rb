@@ -7,5 +7,9 @@ end
 # that serves static files
 use Merb::Rack::Static, Merb.dir_for(:public)
 
+# use Repertoire Asset middleware to provide javascript dependencies in gems
+require 'repertoire-assets'
+use Repertoire::Assets::Processor, Merb::Config, Merb.logger
+
 # this is our main merb application
 run Merb::Rack::Application.new

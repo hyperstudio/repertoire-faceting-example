@@ -27,9 +27,7 @@
 
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
-  # RESTful routes
-  # resources :posts
-  
+    
   match('/:controller/counts/:facet').to(:action => 'counts')
   match('/:controller/results').to(:action => 'results')
   

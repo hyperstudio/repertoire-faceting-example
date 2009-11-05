@@ -18,4 +18,6 @@ src/*
 .svn/*
 gems/gems/*
 gems/specifications/*
+gems/dirs/*
+gems/environment.rb
 merb_profile_results
