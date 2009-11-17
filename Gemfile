@@ -1,14 +1,12 @@
 bundle_path "gems"
 disable_system_gems 
 
-gem "mongrel"
-
 # dependencies are generated using a strict version, don't forget to edit the gem versions when upgrading.
-merb_gems_version = "1.1"
-dm_gems_version   = ">=0.10.2"
+merb_gems_version = "1.0.15"
+dm_gems_version   = ">=0.10.1"
 do_gems_version   = ">=0.10.0"
 
-gem "repertoire_faceting" #, "~>0.3.4", :git => "git@github.com:repertoire/repertoire-faceting.git"
+gem "repertoire_faceting", "~>0.3.4" #, :git => "git@github.com:repertoire/repertoire-faceting.git", :tag => '0.3.5'
 
 # For more information about each component, please read http://wiki.merbivore.com/faqs/merb_components
 gem "merb-core", merb_gems_version 
@@ -41,4 +39,5 @@ gem "dm-serializer", dm_gems_version
 
 gem "merb_datamapper", merb_gems_version
 
-gem "json"
+gem "json", "~>1.1.9"
+gem "mongrel", "~>1.1.5"
