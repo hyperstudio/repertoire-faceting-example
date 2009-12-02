@@ -1,0 +1,4 @@
+known bugs:
+
+- the alphabetic/numeric ordering example is not working as of rep.ajax.toolkit 0.2.0
+  state/pre_update is too low-level for the model-centric design... require subclassing in this case?

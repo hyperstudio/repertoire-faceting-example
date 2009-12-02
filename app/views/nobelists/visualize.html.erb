@@ -32,8 +32,9 @@ $().ready(function() {
       },
       handlers: {
         'click!.clear_control' : function(self) {
-          self.refinements(self.facet_name()).length = 0;
-          self.state_changed();
+          var context = self.context();
+          context.refinements(self.facet_name()).length = 0;
+          context.trigger('changed');
           return false;
         }
       }
@@ -53,13 +54,15 @@ $().ready(function() {
       handlers: {
         'click!.sort' : function(self) {
           order_by_count = !order_by_count;
-          self.reload()       // only need to update this facet
+          self.refresh()       // only need to update this facet
           return false;
         }
       },
-      pre_update: function(state) {
+      state: function() {
         // extra state to send to server
-        state.order_by = order_by_count ? 'count' : 'alphanumeric';
+        return {
+          order_by: order_by_count ? 'count' : 'alphanumeric'
+        };
       }
     });
     
