@@ -1,5 +1,6 @@
 <style TYPE="text/css" media=screen>
-.rep .facet .values .value .label { left: 1.2em; }  /* extra space since numbers go up to 1,000,000 */
+.rep .facet .values .value .label { left: 1.2em; } /* extra space since numbers go up to 1,000,000 */
+#results { clear: none; margin-top: 10px; }
 </style>
 
 <script language="javascript">
@@ -16,11 +17,12 @@ $().ready(function() {
 });
 </script>
 
-<a style='float:right; clear: right; margin-right:10px' href='<%= url(:controller => :nobelists) %>'>Default facets</a>
-
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form>
+
+<%= partial './navigation', :select => :citizens %>
+
 <div id='citizens'>
   <div class='left'>
     <div id='gender' class='facet'></div>

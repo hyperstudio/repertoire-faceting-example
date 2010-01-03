@@ -6,7 +6,7 @@ $().ready(function() {
   $('#nobelists').facet_context(function() {
     return { 
       search: $("#search").val()
-    };
+    }
   });
   $('.facet').facet();
   $('.nested_facet').nested_facet();
@@ -14,12 +14,12 @@ $().ready(function() {
 });
 </script>
 
-<a style='float:right; clear: right; margin-right:10px' href='<%= url(:action => :visualize) %>'>Visual / Extension demo</a>
-<a style='float:right; clear: right; margin-right:10px' href='<%= url(:controller => :citizens) %>'>Scalability demo</a>
-
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form> 
+
+<%= partial './navigation', :select => :nobelists %>
+
 <div id='nobelists'>
   <div class='left'>
     <div id='discipline' class='facet'></div>

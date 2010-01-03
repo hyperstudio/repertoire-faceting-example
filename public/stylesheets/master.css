@@ -8,3 +8,10 @@ form { margin: 10px; }
 .nobelist img { float: left; margin: 5px; }
 
 .citizen { font-size: 9pt; }
+
+form { float:left; clear: none; }
+#navigation { float:right; clear: right; padding-right: 20px; margin-right: 150px; height: 1.3em; border-bottom: 1px dotted #CCC; }
+#navigation ul { margin: 0px; padding: 0px; line-height: 1em; white-space: nowrap; }
+#navigation li { list-style-type: none; display: inline; }
+#navigation li a { text-decoration: none; padding: 7px 10px; color: #000; }
+#navigation .selected { text-decoration: underline; }

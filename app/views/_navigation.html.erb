@@ -1,0 +1,9 @@
+<% classes = Hash.new { 'deselected' } %>
+<% classes[select] = 'selected' %>
+
+<ul id='navigation'>
+<li><a class='<%= classes[:nobelists] %>' href='<%= url(:controller => :nobelists) %>'>Default</a></li>
+<li><a class='<%= classes[:visualize] %>' href='<%= url(:controller => :nobelists, :action => :visualize) %>'>Visualization</a></li>
+<li><a class='<%= classes[:citizens] %>' href='<%= url(:controller => :citizens) %>'>Scalability</a></li>
+<li><a class='<%= classes[:map] %>' href='<%= url(:controller => :businesses) %>'>GIS</a></li>
+</ul>

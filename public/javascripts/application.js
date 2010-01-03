@@ -5,6 +5,8 @@
 //= require <rep.faceting>
 //= require <rep.protovis-facets>
 
+//= require <rep.faceting/ext/earth_facet>
+
 //= require <protovis>
 
 visualize_nobelists = function(nobelists, $elem, options) {

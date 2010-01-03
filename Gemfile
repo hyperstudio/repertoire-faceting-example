@@ -1,12 +1,14 @@
 bundle_path "gems"
 disable_system_gems 
 
+gem "bundler"
+
 # dependencies are generated using a strict version, don't forget to edit the gem versions when upgrading.
 merb_gems_version = "1.0.15"
 dm_gems_version   = ">=0.10.1"
 do_gems_version   = ">=0.10.0"
 
-gem "repertoire_faceting", "~>0.3.5" #, :git => "git@github.com:repertoire/repertoire-faceting.git", :tag => '0.3.5'
+gem "repertoire_faceting", "~>0.4.0" #, :git => "git@github.com:repertoire/repertoire-faceting.git"
 
 # For more information about each component, please read http://wiki.merbivore.com/faqs/merb_components
 gem "merb-core", merb_gems_version 

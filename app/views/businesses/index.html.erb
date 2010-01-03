@@ -1,0 +1,48 @@
+<style TYPE="text/css" media=screen>
+.rep .facet .values .value .label { left: 1.2em; }  /* extra space since numbers go up to 1,000,000 */
+#businesses { clear: both; }
+#area .facet { width: 600px; }
+#area .facet .values { height: 434px; }
+#area { clear:none; float:left; width:600px; margin: 10px; }
+</style>
+
+<script language="javascript">
+$().ready(function() {
+  // only necessary if using sub-uris
+  repertoire.defaults = { path_prefix: '<%= ::Merb::Config[:path_prefix] %>' };
+
+  $('#businesses').facet_context(function() {
+    return { search: $("#search").val() };
+  });
+  
+  $('#naics').nested_facet( { compress: true });
+  
+  $("#area").earth_facet( { 
+    title: 'Location',
+    camera: { lat: 37, lon: -94, tilt: 4, altitude: 4000000, speed: 0.2 }
+  });
+  
+  $('#ownership').facet();
+  $('#size').facet();
+  $('#annual_pay').facet();
+
+});
+</script>
+
+<form>
+Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
+</form>
+
+<%= partial './navigation', :select => :map %>
+
+<div id='businesses'>
+  <div class='left'>
+    <div id='naics' title='Sector'></div>
+    <div id='ownership'></div>
+    <div id='size'></div>
+  </div>
+  <div id='area'></div>
+  <div class='right'>
+    <div id='annual_pay' title='Average Salary'></div>
+  </div>
+</div>

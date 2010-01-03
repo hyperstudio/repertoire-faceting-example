@@ -1,0 +1,185 @@
+#!/usr/bin/rake
+
+BLS_YEARS = 2000..2000  # change as necessary; valid years for BLS CEWS are 1990 to 2007
+
+BLS_STATE_CODES = %w{ 01AL 02AK 04AZ 05AR 06CA 08CO 09CT 10DE 11DC 12FL 13GA 15HI 16ID 17IL 18IN 19IA 20KS 
+                      21KY 22LA 23ME 24MD 25MA 26MI 27MN 28MS 29MO 30MT 31NE 32NV 33NH 34NJ 35NM 36NY 37NC 
+                      38ND 39OH 40OK 41OR 42PA 44RI 45SC 46SD 47TN 48TX 49UT 50VT 51VA 53WA 54WV 55WI 56WY 
+                      72PR 78VI }
+
+ATLAS_FILES     = { 'citiesx020' => 4269,
+                    'countyp020' => 4269,
+                    'statesp020' => 4269 }
+
+CENSUS_FILES = %w{ SUB-EST2008-ALL }
+
+verbose(true)
+
+#
+# Load city, county, state GIS layers from the US National Atlas
+#
+
+namespace :atlas do
+
+  directory 'atlas'
+
+  ATLAS_FILES.each do |layer, srid|
+    base = "./atlas/#{layer}"
+
+    # put files into database
+    task :bulkload => base.ext('sql') do
+      sh "psql -Upostgres repertoire_testing -f #{base}.sql"
+    end
+
+    # convert to postgis format
+    file base.ext('sql') => base.ext('shp') do
+      sh "shp2pgsql -s #{srid} -I #{base}.shp #{layer} > #{base}.sql"
+    end
+
+    # unzip compressed files
+    file base.ext('shp') => base.ext('tar.gz') do
+      sh "tar -C atlas -xmvzf #{base}.tar.gz"
+    end
+
+    # get files from National Atlas site
+    file base.ext('tar.gz') => 'atlas' do
+      sh "curl -o %s.tar.gz http://dds.cr.usgs.gov/pub/data/nationalatlas/%s.tar.gz" % [ base, base.pathmap("%f") ]
+    end
+  end
+
+  task :prolog do
+    sh "psql -Upostgres repertoire_testing -f atlas_prolog.sql"
+  end
+
+  task :postlog do
+    sh "psql -Upostgres repertoire_testing -f atlas_postlog.sql"
+  end
+
+  task :database => [ :prolog, :bulkload, :postlog ]
+
+  desc "Upload National Atlas layers to the GIS database"
+  task :load => :database
+
+end
+
+
+#
+# Load USA Population estimate data based on 2000 Census
+#
+
+namespace :census do
+
+  directory 'census'
+
+  CENSUS_FILES.each do |f|
+    base = "./census/#{f}"
+    
+    # put files into database
+    task :bulkload => base.ext('sql') do
+      sh "psql -Upostgres repertoire_testing -f #{base}.sql"
+    end
+
+    # create sql bulk load file
+    file base.ext('sql') => base.ext('csv') do
+      sh "echo 'COPY sub_est2008 FROM stdin WITH CSV HEADER;' > #{base}.sql"
+      sh "iconv -f LATIN1 -t UTF-8 #{base}.csv >> #{base}.sql"
+      #sh "echo '\\.' >> #{base}.sql"
+    end
+  
+    # ftp files from BLS
+    file base.ext('csv') => 'census' do
+      sh "curl -o %s.csv http://www.census.gov/popest/cities/files/%s.csv" % [ base, base.pathmap("%f") ]
+    end
+  end
+
+  task :bulkload => [ :prolog ]
+
+  task :prolog do
+    sh "psql -Upostgres repertoire_testing -f census_prolog.sql"
+  end
+
+  task :postlog do
+    sh "psql -Upostgres repertoire_testing -f census_postlog.sql"
+  end
+
+  task :database => [:prolog, :bulkload, :postlog]
+
+  desc "Upload Census data to the database"
+  task :load => :database
+
+end
+
+
+#
+# Load NAICS county-level data from the Bureau of Labor Statistics
+#
+
+namespace :bls do
+
+  directory 'bls'
+
+  BLS_YEARS.each do |year|
+    BLS_STATE_CODES.each do |state_code|
+      year2    = year.to_s[2..4]
+      base = "./bls/cn#{state_code.downcase}#{year.to_s[2..4]}"
+    
+      # put files into database
+      task :bulkload => base.ext('sql') do
+        sh "psql -Upostgres repertoire_testing -f #{base}.sql"
+      end
+    
+      # preprocess sql files to load into database
+      file base.ext('sql') => [ base.ext('enb'), './bls_munge.rb' ] do
+        sh "ruby ./bls_munge.rb #{base}.enb > #{base}.sql"
+      end
+    
+      # unzip compressed files
+      file base.ext('enb') => base.ext('zip') do
+        sh "unzip -o -L #{base}.zip -d ./bls"                       # -L changes files to lowercase
+        sh "touch #{base}.enb"
+      end
+    
+      # ftp files from BLS
+      file base.ext('zip') => 'bls' do
+        sh "curl -o %s.zip ftp://ftp.bls.gov/pub/special.requests/cew/%s/county/%s.zip" % [ base, year, base.pathmap("%f") ]
+      end
+    end
+  end
+
+  task :bulkload => [ :prolog ]
+
+  task :prolog do
+    sh "psql -Upostgres repertoire_testing -f bls_prolog.sql"
+  end
+
+  task :postlog => [ 'census:load', :bulkload ] do
+    sh "psql -Upostgres repertoire_testing -f bls_postlog.sql"
+  end
+
+  task :database => [:prolog, :bulkload, :postlog]
+
+  desc "Upload Bureau of Labor Statistics data to the database"
+  task :load => :database
+
+end
+
+
+#
+# General tasks
+#
+
+
+desc "Clean up all files (leaves database untouched)"
+task :clean do
+  sh "rm -rf ./bls"
+  sh "rm -rf ./atlas"
+  sh "rm -rf ./census"
+end
+
+desc "Recreate facets (assumes GIS & BLS data loaded)"
+task :facets do
+  sh "psql -Upostgres repertoire_testing -f bls_facets.sql"
+end
+
+desc "Load everything"
+task :default => [ 'atlas:load', 'bls:load', 'census:load', 'facets' ]

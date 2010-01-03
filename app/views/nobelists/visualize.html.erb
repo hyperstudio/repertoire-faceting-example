@@ -14,7 +14,7 @@ $().ready(function() {
   $('#nobelists').facet_context(function() {
     return { 
       search: $("#search").val() 
-    };
+    }
   });
   
   // examples of visualization facets
@@ -87,11 +87,12 @@ $().ready(function() {
 
 </script>
 
-<a style='float:right; clear: right; margin-right:10px' href='<%= url(:action => :index) %>'>Default facets</a>
-
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form> 
+
+<%= partial './navigation', :select => :visualize %>
+
 <div id='nobelists'>
   <div class='left'>
     <div id='discipline' class='facet'></div>

@@ -1,0 +1,198 @@
+
+<LookAt>
+<longitude><%= avg(x) %></longitude>
+<latitude><%= avg(y) %></latitude>
+<altitude>0</altitude>
+<range><%= camera_range(x, y) %></range>
+<tilt>0</tilt>
+<altitudeMode>clampToGround</altitudeMode>
+</LookAt>
+
+<LookAt>
+  <longitude><%= avg(all_x) %></longitude>
+  <latitude><%= avg(all_y) %></latitude>
+  <range><%= camera_range(all_x, all_y) %></range>
+  <altitude>0</altitude>
+  <tilt>0</tilt>
+  <altitudeMode>clampToGround</altitudeMode>
+</LookAt>
+
+
+
+def range(items) 
+  items.max - items.min
+end
+
+def camera_range(x_items, y_items)
+  xc = range(x_items) / 7 * 350 * 1800     # degrees longitude, miles altitude, meters-to-mile
+  yc = range(y_items) / 4 * 350 * 1800
+  [[xc, yc].max, 4500000].min
+end
+
+all_x = []
+all_y = []
+
+
+//
+// when the faceting context updates with new counts, replace the Earth
+// features with the new set of geometries, colored into a choropleth map
+//
+self.render = function(counts) {
+  
+  // create a set of choropleth KML features based on the facet value counts
+  // N.B. this function assumes the data is already in descending count order!
+  // format of facet values: [ key, count, label, KML ]
+  var quantile_size   = Math.ceil(counts.length / options.quantiles.categories);
+  var total_count     = 0;
+  $.each(counts, function() { total_count += this[1] });
+
+  // generate KML placemarks for each facet value
+  $.each(counts, function(index, value) {
+    var facet_value = value[0];
+    var count       = value[1];
+    var label       = value[2];
+    var geomKml     = value[3];
+    var centerKml   = value[4];
+    
+    // if server is misindexed, skip the record
+    if (!facet_value || !label || !geomKml || !centerKml) {
+      console.log('Error: ' + facet_value + ':' + count + ':' + label + ':' + centerKml + ':' + geomKml.length);
+      return; // throw "Bad facet feature: " + facet_value;
+    }
+    
+    // compute the weighted color for this quantile
+    var quantile = options.quantiles.categories - Math.ceil(index / quantile_size);
+    var fraction = Math.sqrt(count / total_count);
+    
+    // create and add placemark for kml
+    var label     = label + '  ' + count
+    var placemark = createPlacemark(facet_value, label, centerKml, quantile, fraction, geomKml);
+    earth.getFeatures().appendChild(placemark);
+  });
+}
+
+function styleKml(index, iconScale) {
+  var style_id = 'quantile' + index;
+  var fraction = index / options.quantiles.categories;
+  var color    = rampColor(options.quantiles.low, options.quantiles.high, fraction);
+  
+  var kml    = '<Style id="' + style_id + '_normal">' +
+                '<IconStyle><Icon></Icon></IconStyle>' +
+                '<LabelStyle><color>00ffffff</color></LabelStyle>' +
+                '<LineStyle>' +
+                '<color>' + options.style.line.color + '</color>' + 
+                '<width>' + options.style.line.width + '</width>' +
+                '</LineStyle>' +
+                '<PolyStyle><color>' + color + '</color></PolyStyle>' +
+               '</Style>' +
+               '<Style id="' + style_id + '_highlight">' +
+                '<IconStyle><Icon></Icon></IconStyle>' +
+                '<LabelStyle><color>' + options.style.label.color + '</color></LabelStyle>' +
+                '<LineStyle>' +
+                '<color>' + options.style.line.color + '</color>' + 
+                '<width>' + options.style.line.width + '</width>' +
+                '</LineStyle>' +
+                '<PolyStyle><color>' + color + '</color></PolyStyle>' +
+               '</Style>' +
+               '<StyleMap id="' + style_id + '">' +
+                '<Pair>' +
+                '<key>normal</key>' +
+                '<styleUrl>#' + style_id + '_normal</styleUrl>' +
+                '</Pair>' +
+                '<Pair>' +
+                '<key>highlight</key>' +
+                '<styleUrl>#' + style_id + '_highlight</styleUrl>' +
+                '</Pair>' +
+               '</StyleMap>';
+  return kml;
+}
+
+//
+// utility function to create placemarks from KML fragments
+//
+function createPlacemark(id, label, labelKml, quantile, iconScale, geomKml) {
+  var style_id = 'quantile' + quantile;
+  
+  var kmlDoc = 
+           '<?xml version="1.0" encoding="UTF-8"?>' +
+           '<kml xmlns="http://earth.google.com/kml/2.2">' +
+           '<Document>' +
+           '<Placemark id="' + id + '">' +
+           '<name>' + label + '</name>' +
+           '<description>' + label + '</description>' +
+           styleKml(quantile, iconScale) +
+           '<MultiGeometry>' +
+           geomKml +
+           labelKml +
+           '</MultiGeometry>' +
+           '</Placemark>' +
+           '</Document>' +
+           '</kml>';
+  return earth.parseKml(kmlDoc);
+}
+
+//
+// utility function to clear current Earth
+//
+function clearFeatures() {
+  var roots = earth.getFeatures();
+  var c;
+  while ((c = roots.getLastChild()) !== null) {
+    roots.removeChild(c);
+  }
+}
+
+//
+// utility function to calculate intermediate color values
+//
+function rampColor(low, high, fraction) {
+  
+  var pad2 = function (s) {
+    return ((s.length < 2) ? '0' : '') + s;
+  }
+
+  var blendHexComponent = function(c1, c2) {
+    var bar = fraction;
+    c1 = parseInt(c1, 16);
+    c2 = parseInt(c2, 16);
+    var foo =  pad2(Math.floor((c2 - c1) * fraction + c1).toString(16));
+    return foo;
+  }
+  
+  // following algorithm is borrowed from Google Earth extensions library
+  return blendHexComponent(low.substr(0,2), high.substr(0,2)) +
+         blendHexComponent(low.substr(2,2), high.substr(2,2)) +
+         blendHexComponent(low.substr(4,2), high.substr(4,2)) +
+         blendHexComponent(low.substr(6,2), high.substr(6,2));
+
+  }
+
+
+
+quantiles: { categories: 7, low: "cc507fff", high: "cc00008b" },    /* N.B.! Google Earth uses #aabbggrr */
+style:     {
+  label: { color: "ccffffff" },
+  line:  { width: 2.5, color: "ccffffff" }
+},
+
+
+
+-- Add column with complete nesting to NAICS for display
+ALTER TABLE naics ADD COLUMN display_title TEXT[];
+UPDATE naics SET display_title = 
+  (SELECT array_agg(substring(n2.title from E'\[0-9]+ (.*)')) FROM
+    (SELECT title FROM naics n1 WHERE position(n1.code IN naics.code) = 1 ORDER BY length(code)) AS n2);
+
+
+-- old way of creating faceted index for naics
+	  SELECT naics.code AS naics, display_title AS label, signature(_packed_id) FROM businesses, naics
+	  WHERE businesses.naics like (naics.code || '%')
+	  GROUP BY naics.code, naics.display_title
+	
+	
+		SELECT recreate_table('_businesses_naics_facet', $$
+		  SELECT naics.code AS naics, naics.display_title AS label, collect(signature) AS signature
+		  FROM naics, (SELECT naics, signature(_packed_id) FROM businesses GROUP BY naics) AS items
+		  WHERE items.naics like naics.code || '%'
+		  GROUP BY naics.code, naics.display_title
+		$$);
