@@ -1,17 +1,25 @@
-Merb.logger.info("Loaded DEVELOPMENT Environment...")
-Merb::Config.use { |c|
-  c[:exception_details] = true
-  c[:reload_templates] = true
-  c[:reload_classes] = true
-  c[:reload_time] = 0.5
-  c[:ignore_tampered_cookies] = true
-  c[:log_auto_flush ] = true
-  c[:log_level] = :debug
+RepertoireFacetingExample::Application.configure do
+  # Settings specified here will take precedence over those in config/environment.rb
 
-  c[:log_stream] = STDOUT
-  c[:log_file]   = nil
+  # In the development environment your application's code is reloaded on
+  # every request.  This slows down response time but is perfect for development
+  # since you don't have to restart the webserver when you make code changes.
+  config.cache_classes = false
 
-  c[:path_prefix] = '/facets'
+  # Log error messages when you accidentally call methods on nil.
+  config.whiny_nils = true
+
+  # Show full error reports and disable caching
+  config.consider_all_requests_local       = true
+  config.action_view.debug_rjs             = true
+  config.action_controller.perform_caching = false
+
+  # Don't care if the mailer can't send
+  config.action_mailer.raise_delivery_errors = false
+
+  # Print deprecation notices to the Rails logger
+  config.active_support.deprecation = :log
   
-#  c[:log_file]  = Merb.root / "log" / "development.log"
-}
+  # Tell asset server prefix of app
+  config.repertoire_assets.prefix_path = '/facets'
+end

@@ -1,10 +1,6 @@
-class Affiliation
-  include DataMapper::Resource
+class Affiliation < ActiveRecord::Base
   
-  property :id,     Serial
-  property :detail, String, :length => 200, :nullable => false
-  property :degree, String
-  property :year,   Integer
+  # see 'repertoire-faceting/test/nobelists.sql'
   
   belongs_to :nobelist
 end

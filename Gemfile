@@ -1,45 +1,35 @@
-bundle_path "gems"
-disable_system_gems 
+source 'http://rubygems.org'
 
-gem "bundler"
+# Bundle edge Rails; revise after Rails 3.0 release
+gem 'rails', '3.0.0.rc' #, :git => 'git://github.com/rails/rails.git'
 
-# dependencies are generated using a strict version, don't forget to edit the gem versions when upgrading.
-merb_gems_version = "1.0.15"
-dm_gems_version   = ">=0.10.2"
-do_gems_version   = ">=0.10.0"
+# Other standard Hyperstudio gems
+#TODO
+#gem 'repertoire-faceting', :git => 'git@github.com:repertoire/repertoire-faceting.git'
+gem 'repertoire-faceting', :path => '../repertoire-faceting'
 
-gem "repertoire_faceting", "~>0.4.0" #, :git => "git@github.com:repertoire/repertoire-faceting.git"
+gem 'repertoire-assets', :git => 'git@github.com:repertoire/repertoire-assets.git'
 
-# For more information about each component, please read http://wiki.merbivore.com/faqs/merb_components
-gem "merb-core", merb_gems_version 
-gem "merb-action-args", merb_gems_version
-gem "merb-assets", merb_gems_version  
-gem("merb-cache", merb_gems_version) do
-  Merb::Cache.setup do
-    register(Merb::Cache::FileStore) unless Merb.cache
-  end
-end
-gem "merb-helpers", merb_gems_version 
-gem "merb-mailer", merb_gems_version  
-gem "merb-slices", merb_gems_version  
-gem "merb-auth-core", merb_gems_version
-gem "merb-auth-more", merb_gems_version
-gem "merb-auth-slice-password", merb_gems_version
-gem "merb-param-protection", merb_gems_version
-gem "merb-exceptions", merb_gems_version
-gem "merb-gen", merb_gems_version 
+gem 'pg'
 
-gem "data_objects", do_gems_version
-gem "do_postgres", do_gems_version
-gem "dm-core", dm_gems_version         
-gem "dm-aggregates", dm_gems_version   
-gem "dm-migrations", dm_gems_version   
-gem "dm-timestamps", dm_gems_version   
-gem "dm-types", dm_gems_version        
-gem "dm-validations", dm_gems_version  
-gem "dm-serializer", dm_gems_version   
+# Use unicorn as the web server
+# gem 'unicorn'
 
-gem "merb_datamapper", merb_gems_version
+# Deploy with Capistrano
+# gem 'capistrano'
 
-gem "json", "~>1.1.9"
-gem "mongrel", "~>1.1.5"
+# To use debugger
+# gem 'ruby-debug'
+
+# Bundle the extra gems:
+# gem 'bj'
+# gem 'nokogiri', '1.4.1'
+# gem 'sqlite3-ruby', :require => 'sqlite3'
+# gem 'aws-s3', :require => 'aws/s3'
+
+# Bundle gems for the local environment. Make sure to
+# put test-only gems in this group so their generators
+# and rake tasks are available in development mode:
+# group :development, :test do
+#   gem 'webrat'
+# end

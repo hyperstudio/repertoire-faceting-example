@@ -4,3 +4,18 @@ known bugs:
   state/pre_update is too low-level for the model-centric design... require subclassing in this case?
 
 - nested facets - when a child is named same as parent, it deselects it rather than refining
+
+
+
+rails3 migration:
+
+- start up in console									DONE
+- start up in server									DONE
+- verify repertoire-assets injection					DONE
+- console access to example data models (CRUD)			DONE
+- repertoire-faceting update: model finder methods
+- console access to example model facets
+- repertoire-faceting: unit tests running
+- server access to example model facets
+- documentation revision
+- done
