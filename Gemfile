@@ -8,7 +8,8 @@ gem 'rails', '3.0.0.rc' #, :git => 'git://github.com/rails/rails.git'
 #gem 'repertoire-faceting', :git => 'git@github.com:repertoire/repertoire-faceting.git'
 gem 'repertoire-faceting', :path => '../repertoire-faceting'
 
-gem 'repertoire-assets', :git => 'git@github.com:repertoire/repertoire-assets.git'
+#gem 'repertoire-assets', :git => 'git@github.com:repertoire/repertoire-assets.git'
+gem 'repertoire-assets', :path => '../repertoire-assets'
 
 gem 'pg'
 

@@ -1,6 +1,5 @@
-GIT
-  remote: git@github.com:repertoire/repertoire-assets.git
-  revision: 8bc2d6f
+PATH
+  remote: /Users/yorkc/Desktop/MIT/repertoire-assets
   specs:
     repertoire-assets (0.2.0)
       rack (>= 1.0.1)

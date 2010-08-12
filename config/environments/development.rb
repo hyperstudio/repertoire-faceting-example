@@ -21,5 +21,5 @@ RepertoireFacetingExample::Application.configure do
   config.active_support.deprecation = :log
   
   # Tell asset server prefix of app
-  config.repertoire_assets.prefix_path = '/facets'
+  # config.repertoire_assets.path_prefix = '/facets'
 end

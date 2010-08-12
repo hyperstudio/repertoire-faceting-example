@@ -1,0 +1,12 @@
+<%# params: nobelist %>
+<div class='nobelist'>
+  <div><img src="<%= nobelist.image_url %>"></div>
+  <div><%# nobelist.name.gsub(/#{@search}/i, "<span style='background:yellow'>#{@search}</span>") %>
+       <%= nobelist.name %></div>
+  <div><%= nobelist.nobel_year %>, <%= nobelist.discipline %><%= ", with #{nobelist.co_winner}" if nobelist.co_winner %> <%= ' (Shared)' if nobelist.shared %> </div>
+  <div><%= "Born #{nobelist.birthdate.to_s(:long)}" if nobelist.birthdate %>
+       <%= [nobelist.birth_city, nobelist.birth_state, nobelist.birth_country].compact.join(', ') %></div>
+  <div><%= "Died #{nobelist.deathdate.to_s(:long)}" if nobelist.deathdate %></div>
+  <div><a href="<%= nobelist.url %>"><%= nobelist.url %></a></div>
+  <div style="clear:both"></div>
+</div>

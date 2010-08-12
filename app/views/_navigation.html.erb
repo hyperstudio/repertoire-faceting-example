@@ -1,9 +1,11 @@
+<% # parameters:   highlight - menu item to show highlighted %>
+
 <% classes = Hash.new { 'deselected' } %>
-<% classes[select] = 'selected' %>
+<% classes[highlight] = 'selected' %>
 
 <ul id='navigation'>
-<li><a class='<%= classes[:nobelists] %>' href='<%= url(:controller => :nobelists) %>'>Default</a></li>
-<li><a class='<%= classes[:visualize] %>' href='<%= url(:controller => :nobelists, :action => :visualize) %>'>Visualization</a></li>
-<li><a class='<%= classes[:citizens] %>' href='<%= url(:controller => :citizens) %>'>Scalability</a></li>
-<li><a class='<%= classes[:map] %>' href='<%= url(:controller => :businesses) %>'>GIS</a></li>
+<%= link_to "Default", Nobelist, :class => classes[:nobelists] %>
+<%= link_to "Visualisation", "/nobelists/visualization", :class => classes[:nobelists] %>
+<%= link_to "Scalability", Citizen, :class => classes[:citizens] %>
+<%= link_to "GIS", Business, :class => classes[:map ]%>
 </ul>
