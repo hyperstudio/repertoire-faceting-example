@@ -1,6 +1,6 @@
 class NobelistsController < ApplicationController
 
-#  include Repertoire::Faceting::Controller
+  include Repertoire::Faceting::Controller
 
   def index
     @search = params[:search] || ''
@@ -12,25 +12,9 @@ class NobelistsController < ApplicationController
     render
   end
   
-  # webservices
-  
-  def counts
-    name   = params[:facet]
-    filter = params[:filter] || {}
-    
-    @counts = base(name).refine(filter).count
-    
-    render :json => @counts.to_a
-  end
+  # webservice bases
 
-  def results
-    filter = params[:filter] || {}
-    
-    @results = base.refine(filter).to_a
-
-    render @results, :layout => false
-  end
-
+  protected
   def base(facet=nil)
     search = "%#{params[:search]}%"
     

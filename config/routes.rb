@@ -56,34 +56,11 @@ RepertoireFacetingExample::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   
-=begin
-
-  # for the client-ordered facet count example
-  match('/:controller/counts_with_sorting/:facet').to(:action => 'counts_with_sorting')
-
-  # Adds the required routes for merb-auth using the password slice
-  # slice(:merb_auth_slice_password, :name_prefix => nil, :path_prefix => "")
-
-  # This is the default route for /:controller/:action/:id
-  # This is fine for most cases.  If you're heavily using resource-based
-  # routes, you may want to comment/remove this line to prevent
-  # clients from calling your create or destroy actions with a GET
-  default_routes
-
-  # Change this for your home page to be available at /
-  match('/').to(:controller => 'nobelists', :action =>'index')
-=end
-  
 #  scope "(/facets)" do
-    root :to => "nobelists#index"
+    faceting_for :nobelists, :citizens, :businesses         # NB must be BEFORE any resources!    
     
-    resource :nobelists
-    match "nobelists/visualization", :controller => :nobelists, :action => :visualize
-    resource :citizens
-    resource :businesses
-    
-    match '/:controller/counts/:facet', :action => 'counts'
-    match '/:controller/results', :action => 'results'
+    match ':controller(/:action(/:id(.:format)))'
+
 #  end
   
 end

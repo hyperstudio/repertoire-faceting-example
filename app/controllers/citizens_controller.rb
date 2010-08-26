@@ -38,8 +38,6 @@ class Citizens < Application
     @search = search
     @results = Citizen.facet_results({:refinements => filter, :order => [:last_name], :limit => 100}.merge(extra))
     
-    puts "ok, got #{@results.size} results"
-    
     display @results, :layout => false
   end
 

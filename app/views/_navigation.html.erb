@@ -4,8 +4,8 @@
 <% classes[highlight] = 'selected' %>
 
 <ul id='navigation'>
-<%= link_to "Default", Nobelist, :class => classes[:nobelists] %>
-<%= link_to "Visualisation", "/nobelists/visualization", :class => classes[:nobelists] %>
-<%= link_to "Scalability", Citizen, :class => classes[:citizens] %>
-<%= link_to "GIS", Business, :class => classes[:map ]%>
+<%= link_to "Default", {:controller => :nobelists}, {:class => classes[:nobelists]} %>
+<%= link_to "Visualisation", {:controller => :nobelists, :action => :visualize}, {:class => classes[:nobelists]} %>
+<%#= link_to "Scalability", {:controller => :citizens}, {:class => classes[:citizens]} %>
+<%#= link_to "GIS", {:controller => :businesses}, {:class => classes[:map]} %>
 </ul>

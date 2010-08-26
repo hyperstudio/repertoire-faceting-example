@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 # Bundle edge Rails; revise after Rails 3.0 release
-gem 'rails', '3.0.0.rc' #, :git => 'git://github.com/rails/rails.git'
+gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-0-stable'
 
 # Other standard Hyperstudio gems
 #TODO

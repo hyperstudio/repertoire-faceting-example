@@ -38,5 +38,9 @@ module RepertoireFacetingExample
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    
+    # Send json without class name decorations (for visualization widget)
+    config.active_record.include_root_in_json = false
+    
   end
 end

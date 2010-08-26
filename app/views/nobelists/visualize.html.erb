@@ -1,14 +1,16 @@
+<% config = RepertoireFacetingExample::Application.config %>
+
 <style>
 #discipline .values { width: 240px; height: 230px; overflow: hidden; }
 #nobel_year .values { width: 240px; height: 230px; overflow: hidden; }
-#birthdate .values { width: 240px; height: 120px; overflow: hidden; }
+#birth_decade .values { width: 240px; height: 120px; overflow: hidden; }
 #results, #timeline { width: 570px; height: 570px; clear: none; float: left;}
 </style>
 
 <script>
 $().ready(function() {
   // only necessary if using sub-uris
-  rack_prefix         = '<%= ::Merb::Config[:path_prefix] %>';
+  rack_prefix         = '<%= config.repertoire_assets.path_prefix %>';
   repertoire.defaults = { path_prefix: rack_prefix };
 
   $('#nobelists').facet_context(function() {
@@ -20,7 +22,7 @@ $().ready(function() {
   // examples of visualization facets
   $('#discipline').bar_facet({ height: 230, width: 230 });
   $('#nobel_year').donut_facet({ height: 230, width: 230, thickness: 15 });
-  $('#birthdate').scatter_facet({ height: 120, width: 230, max:16 });
+  $('#birth_decade').scatter_facet({ height: 120, width: 230, max:16 });
 
   // example of injecting a control into a facet
   //   here we add a multivalued facet control that shows how many values are selected and allows a 'clear all'
@@ -91,7 +93,7 @@ $().ready(function() {
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form> 
 
-<%= partial './navigation', :select => :visualize %>
+<%= render :partial => './navigation', :locals => { :highlight => :nobelists } %>
 
 <div id='nobelists'>
   <div class='left'>
@@ -103,6 +105,6 @@ Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
   <div class='right'>
     <div id='degree' class='facet' title='Degree at MIT'></div>
     <div id='birth_place' class='nested_facet' title='Birth Place'></div>
-    <div id='birthdate' class='facet' title='Birth Decade'></div>
+    <div id='birth_decade' class='facet' title='Birth Decade'></div>
   </div>
 </div>
