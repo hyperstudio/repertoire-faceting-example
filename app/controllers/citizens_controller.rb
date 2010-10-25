@@ -1,44 +1,31 @@
-class Citizens < Application
+class CitizensController < ApplicationController
 
-  include Merb::Helpers::DateAndTime
+  include Repertoire::Faceting::Controller
 
-  def index(search='')
-    @search = search
+  def index
+    @search = params[:search] || ''
     render
   end
-  
-  def map(search='')
-    @search = search
-    render
-  end
-  
-  # webservices
-  
-  def counts(facet, search, filter={})
-    provides :js
 
-    order = case facet
-    when 'birthdate'  then [:birthdate.asc, :count.desc]
-    else [:count.desc, facet]
+  # webservice bases
+
+  def results
+    filter = params[:filter] || {}
+    # over-ridden to limit results per page
+    @results = base.refine(filter).order(:last_name).limit(100).to_a
+    respond_to do |format|
+      format.html { render @results, :layout => false }
+      format.json { render :json => @results }
     end
-    
-    extra = {}
-    extra[:conditions] = ["_fulltext @@ to_tsquery(?)", search] unless search.blank?
-
-    @counts = Citizen.facet_count(facet, {:refinements => filter, :order => order, :nullable => false}.merge(extra))
-    display @counts
   end
 
-  def results(search, filter={})
-    provides :html
-    
-    extra = {}
-    extra[:conditions] = ["_fulltext @@ to_tsquery(?)", search] unless search.blank?
-    
-    @search = search
-    @results = Citizen.facet_results({:refinements => filter, :order => [:last_name], :limit => 100}.merge(extra))
-    
-    display @results, :layout => false
+  protected
+  def base
+    if (search = params[:search]).blank?
+      Citizen
+    else
+      Citizen.where([ "_fulltext @@ to_tsquery(?)", search ])
+    end
   end
 
 end

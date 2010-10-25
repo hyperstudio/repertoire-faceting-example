@@ -19,6 +19,9 @@ $().ready(function() {
     }
   });
   
+  // standard facets
+  $('#birth_place').nested_facet();
+  
   // examples of visualization facets
   $('#discipline').bar_facet({ height: 230, width: 230 });
   $('#nobel_year').donut_facet({ height: 230, width: 230, thickness: 15 });
@@ -39,32 +42,6 @@ $().ready(function() {
           context.trigger('changed');
           return false;
         }
-      }
-    });
-    
-  //   here we add a count/alphanumeric sort control - note additional data sent to server and new webservice
-  //   (.... should this be core functionality?)
-  var order_by_count = true;
-  $('#birth_place').nested_facet({
-      url: rack_prefix + '/nobelists/counts_with_sorting/birth_place',
-      injectors: {
-        '.title .controls' : function(self, data) {
-          if (order_by_count) $(this).append('<span class="sort">1-9</span>')
-          else                $(this).append('<span class="sort">a-z</span>')    
-        }
-      },
-      handlers: {
-        'click!.sort' : function(self) {
-          order_by_count = !order_by_count;
-          self.refresh()       // only need to update this facet
-          return false;
-        }
-      },
-      state: function() {
-        // extra state to send to server
-        return {
-          order_by: order_by_count ? 'count' : 'alphanumeric'
-        };
       }
     });
     

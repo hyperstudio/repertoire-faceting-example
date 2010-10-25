@@ -1,33 +1,67 @@
 GIT
-  remote: git@github.com:repertoire/rep.ajax.toolkit
-  revision: c35cd405e866266a0d026e68343f0f5dedaf2ca3
+  remote: git://github.com/rack/rack.git
+  revision: 1598f873c891288954981435e707de26cf49395d
   specs:
-    rep.ajax.toolkit (0.3.0)
-      rep.jquery (>= 1.3.2)
-      repertoire-assets (>= 0.1.0)
+    rack (1.2.1)
 
 GIT
-  remote: git@github.com:repertoire/rep.jquery
-  revision: 19bdf91192e62690b0858434cf70d638b7bcec5a
+  remote: git://github.com/rails/arel.git
+  revision: c66f025a8ebfd1d75ac6c5082df5cb4176f3a7bf
   specs:
-    rep.jquery (1.3.2)
-      repertoire-assets (>= 0.1.0)
+    arel (2.0.1.20101020171639)
 
 GIT
-  remote: git@github.com:repertoire/repertoire-assets.git
-  revision: 698b522f8f7602e4cf9812c3465548d9d85fad62
+  remote: git://github.com/rails/rails.git
+  revision: cdce5fc8860982afa63bfa82f6a752972e7f7d19
   specs:
-    repertoire-assets (0.2.0)
-      rack (>= 1.0.1)
+    actionmailer (3.1.0.beta)
+      actionpack (= 3.1.0.beta)
+      mail (~> 2.2.6.1)
+    actionpack (3.1.0.beta)
+      activemodel (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      builder (~> 2.1.2)
+      erubis (~> 2.6.6)
+      i18n (~> 0.4.1)
+      rack (~> 1.2.1)
+      rack-cache (~> 0.5.3)
+      rack-cache-purge (~> 0.0.1)
+      rack-mount (~> 0.6.13)
+      rack-test (~> 0.5.6)
+      tzinfo (~> 0.3.23)
+    activemodel (3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      builder (~> 2.1.2)
+      i18n (~> 0.4.1)
+    activerecord (3.1.0.beta)
+      activemodel (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      arel (~> 2.0.0)
+      tzinfo (~> 0.3.23)
+    activeresource (3.1.0.beta)
+      activemodel (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+    activesupport (3.1.0.beta)
+    rails (3.1.0.beta)
+      actionmailer (= 3.1.0.beta)
+      actionpack (= 3.1.0.beta)
+      activerecord (= 3.1.0.beta)
+      activeresource (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      bundler (~> 1.0.3)
+      railties (= 3.1.0.beta)
+    railties (3.1.0.beta)
+      actionpack (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      rake (>= 0.8.7)
+      thor (~> 0.14.3)
 
-GIT
-  remote: git@github.com:repertoire/repertoire-faceting.git
-  revision: ff7df9fdc70332974a0ff7cf6f1869d516ccd9aa
-  branch: rails-3
+PATH
+  remote: ../repertoire-faceting
   specs:
     repertoire-faceting (0.5)
       pg (~> 0.9.0)
-      rails (~> 3.0.0)
+      rails (~> 3.1.0)
       rep.ajax.toolkit (~> 0.3.0)
       rep.jquery (~> 1.3.2)
       repertoire-assets (~> 0.2.0)
@@ -36,34 +70,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    actionmailer (3.0.0)
-      actionpack (= 3.0.0)
-      mail (~> 2.2.5)
-    actionpack (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
-      builder (~> 2.1.2)
-      erubis (~> 2.6.6)
-      i18n (~> 0.4.1)
-      rack (~> 1.2.1)
-      rack-mount (~> 0.6.12)
-      rack-test (~> 0.5.4)
-      tzinfo (~> 0.3.23)
-    activemodel (3.0.0)
-      activesupport (= 3.0.0)
-      builder (~> 2.1.2)
-      i18n (~> 0.4.1)
-    activerecord (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
-      arel (~> 1.0.0)
-      tzinfo (~> 0.3.23)
-    activeresource (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
-    activesupport (3.0.0)
-    arel (1.0.1)
-      activesupport (~> 3.0.0)
     builder (2.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -75,26 +81,23 @@ GEM
     mime-types (1.16)
     pg (0.9.0)
     polyglot (0.3.1)
-    rack (1.2.1)
+    rack-cache (0.5.3)
+      rack (>= 0.4)
+    rack-cache-purge (0.0.2)
+      rack-cache (~> 0.5)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.4)
+    rack-test (0.5.6)
       rack (>= 1.0)
-    rails (3.0.0)
-      actionmailer (= 3.0.0)
-      actionpack (= 3.0.0)
-      activerecord (= 3.0.0)
-      activeresource (= 3.0.0)
-      activesupport (= 3.0.0)
-      bundler (~> 1.0.0)
-      railties (= 3.0.0)
-    railties (3.0.0)
-      actionpack (= 3.0.0)
-      activesupport (= 3.0.0)
-      rake (>= 0.8.4)
-      thor (~> 0.14.0)
     rake (0.8.7)
-    thor (0.14.0)
+    rep.ajax.toolkit (0.3.0)
+      rep.jquery (>= 1.3.2)
+      repertoire-assets (>= 0.1.0)
+    rep.jquery (1.3.2)
+      repertoire-assets (>= 0.1.0)
+    repertoire-assets (0.2.0)
+      rack (>= 1.0.1)
+    thor (0.14.3)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
@@ -103,9 +106,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  arel!
   pg
-  rails (~> 3.0.0)
-  rep.ajax.toolkit!
-  rep.jquery!
-  repertoire-assets!
+  rack!
+  rails!
+  repertoire-assets
   repertoire-faceting!

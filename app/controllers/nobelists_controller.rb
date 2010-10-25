@@ -15,10 +15,9 @@ class NobelistsController < ApplicationController
   # webservice bases
 
   protected
-  def base(name=nil)
+  def base
     search = "%#{params[:search]}%"
-    base = Nobelist.where(["name ilike ?", search])    
-    name ? base.facet(name) : base
+    Nobelist.where(["name ilike ?", search])
   end
   
 end

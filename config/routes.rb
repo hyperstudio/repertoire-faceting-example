@@ -57,7 +57,7 @@ RepertoireFacetingExample::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
   
 #  scope "(/facets)" do
-    faceting_for :nobelists, :citizens, :businesses         # NB must be BEFORE any resources!    
+    faceting_for :nobelists, :citizens         # NB must be BEFORE any resources!    
     
     match ':controller(/:action(/:id(.:format)))'
 

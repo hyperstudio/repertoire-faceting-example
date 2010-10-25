@@ -1,18 +1,14 @@
 source 'http://rubygems.org'
 
-# Bundle edge Rails; revise after Rails 3.0 release
-gem 'rails', '~>3.0.0'
+# Bundle edge Rails because we require arel 2.0.1; revise after Rails 3.1.0 release to reference gemcutter
+
+gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'arel', :git => 'git://github.com/rails/arel.git'
+gem 'rack', :git => 'git://github.com/rack/rack.git'
 
 # Other standard Hyperstudio gems
-#TODO
-gem 'repertoire-faceting', :git => 'git@github.com:repertoire/repertoire-faceting.git', :branch => 'rails-3'
-gem 'rep.jquery', :git => 'git@github.com:repertoire/rep.jquery'
-gem 'rep.ajax.toolkit', :git => 'git@github.com:repertoire/rep.ajax.toolkit'
-
-#gem 'repertoire-faceting', :path => '../repertoire-faceting'
-
-gem 'repertoire-assets', :git => 'git@github.com:repertoire/repertoire-assets.git'
-#gem 'repertoire-assets', :path => '../repertoire-assets'
+gem 'repertoire-faceting', :path => '../repertoire-faceting'
+gem 'repertoire-assets'
 
 gem 'pg'
 

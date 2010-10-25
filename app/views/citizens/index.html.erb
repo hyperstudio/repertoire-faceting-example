@@ -1,3 +1,5 @@
+<% config = RepertoireFacetingExample::Application.config %>
+
 <style TYPE="text/css" media=screen>
 .rep .facet .values .value .label { left: 1.2em; } /* extra space since numbers go up to 1,000,000 */
 #results { clear: none; margin-top: 10px; }
@@ -6,7 +8,7 @@
 <script language="javascript">
 $().ready(function() {
   // only necessary if using sub-uris
-  repertoire.defaults = { path_prefix: '<%= ::Merb::Config[:path_prefix] %>' };
+  repertoire.defaults = { path_prefix: '<%= config.repertoire_assets.path_prefix %>' };
 
   $('#citizens').facet_context(function() {
     return { search: $("#search").val() };
@@ -21,7 +23,7 @@ $().ready(function() {
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form>
 
-<%= partial './navigation', :select => :citizens %>
+<%= render :partial => './navigation', :locals => { :highlight => :nobelists } %>
 
 <div id='citizens'>
   <div class='left'>
@@ -31,6 +33,6 @@ Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
   <div id='results'></div>
   <div class='right'>
     <div id='birth_place' class='nested_facet' title='Birth Place'></div>
-    <div id='birthdate' class='facet'></div>
+    <div id='birthdate' class='nested_facet'></div>
   </div>
 </div>
