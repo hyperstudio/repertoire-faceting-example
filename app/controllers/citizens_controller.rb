@@ -21,11 +21,9 @@ class CitizensController < ApplicationController
 
   protected
   def base
-    if (search = params[:search]).blank?
-      Citizen
-    else
-      Citizen.where([ "_fulltext @@ to_tsquery(?)", search ])
-    end
+    base = Citizen
+    base = base.where([ "_fulltext @@ to_tsquery(?)", params[:search] ]) if params[:search]
+    base
   end
 
 end

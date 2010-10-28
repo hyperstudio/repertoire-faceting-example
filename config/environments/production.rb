@@ -47,9 +47,6 @@ RepertoireFacetingExample::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  # Make Rails serve static assets (for testing production mode)
-  config.serve_static_assets = true
-  
   config.repertoire_assets.path_prefix = '/facets'
   config.repertoire_assets.compress = true
 end

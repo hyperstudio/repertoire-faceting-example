@@ -20,6 +20,4 @@ bin/*
 gems/*
 !gems/cache/
 merb_profile_results
-data/bls/*
-data/atlas/*
-data/census/*
+data/citizens.sql

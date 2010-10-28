@@ -1,38 +1,37 @@
 GIT
   remote: git://github.com/rack/rack.git
-  revision: 1598f873c891288954981435e707de26cf49395d
+  revision: 3e4833b55d253b7877c078adf59f394e09ec6e99
   specs:
     rack (1.2.1)
 
 GIT
   remote: git://github.com/rails/arel.git
-  revision: c66f025a8ebfd1d75ac6c5082df5cb4176f3a7bf
+  revision: 01e7ceef453e3dc976dc0d12002bb6d4a66f1252
   specs:
     arel (2.0.1.20101020171639)
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: cdce5fc8860982afa63bfa82f6a752972e7f7d19
+  revision: 6a3d6b7f1352efd3e7b931533740252b04850e27
   specs:
     actionmailer (3.1.0.beta)
       actionpack (= 3.1.0.beta)
-      mail (~> 2.2.6.1)
+      mail (~> 2.2.9)
     actionpack (3.1.0.beta)
       activemodel (= 3.1.0.beta)
       activesupport (= 3.1.0.beta)
       builder (~> 2.1.2)
       erubis (~> 2.6.6)
-      i18n (~> 0.4.1)
+      i18n (~> 0.4.2)
       rack (~> 1.2.1)
       rack-cache (~> 0.5.3)
-      rack-cache-purge (~> 0.0.1)
       rack-mount (~> 0.6.13)
       rack-test (~> 0.5.6)
       tzinfo (~> 0.3.23)
     activemodel (3.1.0.beta)
       activesupport (= 3.1.0.beta)
       builder (~> 2.1.2)
-      i18n (~> 0.4.1)
+      i18n (~> 0.4.2)
     activerecord (3.1.0.beta)
       activemodel (= 3.1.0.beta)
       activesupport (= 3.1.0.beta)
@@ -59,7 +58,7 @@ GIT
 PATH
   remote: ../repertoire-faceting
   specs:
-    repertoire-faceting (0.5)
+    repertoire-faceting (0.5.1)
       pg (~> 0.9.0)
       rails (~> 3.1.0)
       rep.ajax.toolkit (~> 0.3.0)
@@ -73,18 +72,17 @@ GEM
     builder (2.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    i18n (0.4.1)
-    mail (2.2.6.1)
+    i18n (0.4.2)
+    mail (2.2.9)
       activesupport (>= 2.3.6)
-      mime-types
-      treetop (>= 1.4.5)
+      i18n (~> 0.4.1)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
     mime-types (1.16)
     pg (0.9.0)
     polyglot (0.3.1)
     rack-cache (0.5.3)
       rack (>= 0.4)
-    rack-cache-purge (0.0.2)
-      rack-cache (~> 0.5)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.6)
@@ -110,5 +108,4 @@ DEPENDENCIES
   pg
   rack!
   rails!
-  repertoire-assets
   repertoire-faceting!
