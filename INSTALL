@@ -1,0 +1,20 @@
+=== Running the Repertoire Faceting Demo
+
+Rails 3 recommendation is to use database-specific schema dump and seeding files
+unless your application is explicitly cross-database.
+
+$ bundle install
+$ rake db:faceting:build                 { sudo will prompt your password }
+$ rake db:seeds:generate
+
+The file db/development_structure.sql represents the current database schema, 
+after all migrations have run (just like schema.db).  Source it and the seed 
+data:
+
+$ rake db:create
+$ (cat db/*.sql data/*.sql) | psql -Upostgres repertoire_testing
+
+And add the facet indices and run:
+
+$ rake reindex
+$ bundle exec rails s                    { see http://localhost:3000/nobelists }

@@ -7,7 +7,7 @@ gem 'arel', :git => 'git://github.com/rails/arel.git'
 gem 'rack', :git => 'git://github.com/rack/rack.git'
 
 # Other standard Hyperstudio gems
-gem 'repertoire-faceting'
+gem 'repertoire-faceting', :git => '../repertoire-faceting'
 
 gem 'pg'
 

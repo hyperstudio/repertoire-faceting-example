@@ -22,7 +22,7 @@ class CitizensController < ApplicationController
   protected
   def base
     base = Citizen
-    base = base.where([ "_fulltext @@ to_tsquery(?)", params[:search] ]) if params[:search]
+    base = base.where([ "_fulltext @@ to_tsquery(?)", params[:search] ]) unless params[:search].blank?
     base
   end
 

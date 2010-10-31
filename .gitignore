@@ -21,3 +21,4 @@ gems/*
 !gems/cache/
 merb_profile_results
 data/citizens.sql
+.bundle
