@@ -56,11 +56,10 @@ RepertoireFacetingExample::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   
-#  scope "(/facets)" do
+  scope "(/facets)" do
     faceting_for :nobelists, :citizens         # NB must be BEFORE any resources!    
     
     match ':controller(/:action(/:id(.:format)))'
-
-#  end
+  end
   
 end

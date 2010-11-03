@@ -12,7 +12,7 @@ after all migrations have run (just like schema.db).  Source it and the seed
 data:
 
 $ rake db:create
-$ (cat db/*.sql data/*.sql) | psql -Upostgres repertoire_testing
+$ (cat db/*.sql data/*.sql) | psql -Upostgres repertoire_faceting_example
 
 And add the facet indices and run:
 

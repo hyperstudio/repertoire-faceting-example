@@ -11,7 +11,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: repertoire_testing
+  database: repertoire_faceting_example
   pool: 5
   username: postgres
   password:
@@ -19,7 +19,7 @@ development:
 production:
   adapter: postgresql
   encoding: unicode
-  database: repertoire_testing
+  database: repertoire_faceting_example
   pool: 5
   username: postgres
   password:
