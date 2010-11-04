@@ -7843,7 +7843,7 @@ namespace :db do
           fields << surnames.next
           fields << gender
           fields << occupations.next
-          fields << cities.next[0..1].reverse
+          fields << cities.next[0..1]
           fields << "19%02i-%02i-%02i" % ([ 98, 11, 27 ].map{|i| rand(i) + 1})
           fields << "xxx-xx-xxx".gsub('x') { rand(9) }
 

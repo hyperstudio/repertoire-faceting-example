@@ -16,8 +16,8 @@ $().ready(function() {
   $("#discipline").tipTip({content: "Over-ride default widgets for rich, drillable visualizations", defaultPosition: "right"});
   $("#nobel_year").tipTip({content: "Protovis and Processing provide opportunities for novel visualizations of your data", defaultPosition: "right"});
   $("#birth_decade").tipTip({content: "Or display your facet data using standard charting techniques", defaultPosition: "left"});
-  $("#degree").tipTip({content: "Combine textual and visual facets, and use indexes to tackle large data sets", defaultPosition: "left"});
-  $("#timeline").tipTip({content: "Build novel visualizations for your results.  Birthdate, nobel date, and death date are charted here.", defaultPosition: "top"});
+  $("#degree,#birth_place").tipTip({content: "Combine textual and visual facets, and use indexes to tackle large data sets", defaultPosition: "left"});
+  $("#timeline").tipTip({content: "Build novel visualizations for your results - e.g. using birthdate, nobel date, and death date.", defaultPosition: "top"});
 
   $('#nobelists').facet_context(function() {
     return { 
