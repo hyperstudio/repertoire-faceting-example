@@ -9,6 +9,10 @@
 $().ready(function() {
   // only necessary if using sub-uris
   repertoire.defaults = { path_prefix: '<%= config.repertoire_assets.path_prefix %>' };
+  
+  $("#search").tipTip({content: "Combine faceted browsing will enterprise-level full-text search"});
+  $(".facet").tipTip({content: "Built-in facet count indices allow your browser to scale up to 1,000,000 items without any change in code", defaultPosition:"right"});
+  $(".nested_facet").tipTip({content: "Index hierarchical and other facets using the same procedure", defaultPosition:"left"});
 
   $('#citizens').facet_context(function() {
     return { search: $("#search").val() };
@@ -22,6 +26,8 @@ $().ready(function() {
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form>
+
+<div id='info'>Repertoire Faceting - Scalability Features</div>
 
 <%= render :partial => './navigation', :locals => { :highlight => :nobelists } %>
 

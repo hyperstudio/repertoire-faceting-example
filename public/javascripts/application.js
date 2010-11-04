@@ -9,6 +9,8 @@
 
 //= require <protovis>
 
+//= require <tipTip>
+
 visualize_nobelists = function(nobelists, $elem, options) {
   var results_canvas = $elem[0];
 

@@ -12,6 +12,12 @@ $().ready(function() {
   // only necessary if using sub-uris
   rack_prefix         = '<%= config.repertoire_assets.path_prefix %>';
   repertoire.defaults = { path_prefix: rack_prefix };
+  
+  $("#discipline").tipTip({content: "Over-ride default widgets for rich, drillable visualizations", defaultPosition: "right"});
+  $("#nobel_year").tipTip({content: "Protovis and Processing provide opportunities for novel visualizations of your data", defaultPosition: "right"});
+  $("#birth_decade").tipTip({content: "Or display your facet data using standard charting techniques", defaultPosition: "left"});
+  $("#degree").tipTip({content: "Combine textual and visual facets, and use indexes to tackle large data sets", defaultPosition: "left"});
+  $("#timeline").tipTip({content: "Build novel visualizations for your results.  Birthdate, nobel date, and death date are charted here.", defaultPosition: "top"});
 
   $('#nobelists').facet_context(function() {
     return { 
@@ -69,6 +75,8 @@ $().ready(function() {
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
 </form> 
+
+<div id='info'>Repertoire Faceting - Widget Extension features</div>
 
 <%= render :partial => './navigation', :locals => { :highlight => :nobelists } %>
 

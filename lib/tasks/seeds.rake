@@ -12,7 +12,7 @@
 #
 
 
-SAMPLE_SIZE = 500000
+SAMPLE_SIZE = 1000000
 
 class Frequencies
   attr_reader :data

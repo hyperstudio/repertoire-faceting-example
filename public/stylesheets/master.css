@@ -1,6 +1,9 @@
 body {font-family: Trebuchet MS, Helvetica, Arial, sans serif; font-size: 10pt; margin: 0em; background: white;}
 
-form { margin: 10px; }
+form { margin: 10px; width:240px; }
+
+#info { float: left; clear: none; margin: 15px; font-size: 12pt; }
+
 .left { float:left; clear: left; margin: 10px; }
 #results { float:left; clear: none; width: 530px;}
 .right { float:left; clear: right; margin: 10px; }

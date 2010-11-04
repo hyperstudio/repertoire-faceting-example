@@ -13,12 +13,22 @@ $().ready(function() {
   $('.facet').facet();
   $('.nested_facet').nested_facet();
   $('#results').results();
+  
+  $("#search").tipTip({content: "Combine faceted browsing will enterprise-level full-text search"});
+  $("#discipline").tipTip({content: "Indexed facet, ordered by descending count", defaultPosition: "right"});
+  $("#nobel_year").tipTip({content: "Unindexed facet, ordered alphanumerically", defaultPosition: "right"});
+  $("#degree").tipTip({content: "Indexed facet, ordered by descending count", defaultPosition: "right"});
+  $("#birth_place").tipTip({content: "Hierarchical facet built from three database columns", defaultPosition: "left"});
+  $("#birth_decade").tipTip({content: "Computed facet value derived from a database date column", defaultPosition: "left"});
+  $("#results").tipTip({content: "Result tiles are formatted using standard Ruby templates", defaultPosition: "top"});
 });
 </script>
 
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
-</form> 
+</form>
+
+<div id='info'>Repertoire Faceting - Core Features</div>
 
 <%= render :partial => './navigation', :locals => { :highlight => :nobelists } %>
 
