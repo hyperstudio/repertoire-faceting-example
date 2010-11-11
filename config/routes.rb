@@ -6,8 +6,7 @@ RepertoireFacetingExample::Application.routes.draw do
     faceting_for :nobelists, :citizens         # NB must be BEFORE any resources!    
     
     match ':controller(/:action(/:id(.:format)))'
-    
-    match "/", :to => redirect("/nobelists")
-  end
+  end  
   
+  root :to => 'nobelists#index'
 end
