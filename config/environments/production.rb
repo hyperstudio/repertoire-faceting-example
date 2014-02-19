@@ -50,6 +50,6 @@ RepertoireFacetingExample::Application.configure do
   # For Rails 4.0
   config.eager_load = true
 
-  config.repertoire_assets.path_prefix = '/facets'
-  config.repertoire_assets.compress = true
+  # config.repertoire_assets.path_prefix = '/facets'
+  # config.repertoire_assets.compress = true
 end

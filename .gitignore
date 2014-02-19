@@ -17,7 +17,6 @@ src/*
 .hg/*
 .svn/*
 gems/*
-bin/*
 !gems/cache/
 public/digest.*
 data/citizens.sql

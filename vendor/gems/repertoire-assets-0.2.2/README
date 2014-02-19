@@ -1,0 +1,234 @@
+Repertoire Assets 
+=================
+
+Repertoire Assets is software for developing and distributing Javascript and
+CSS components for re-use in ruby web projects. It helps you manage large
+javascript codebases by dividing code among many files, and allows you to
+publish your javascript libraries (and their css and images) via ruby gems.
+You can then require them in other javascript web applications, and the asset
+software will manage any dependencies among the libraries so that you can
+focus on writing your own code.
+
+While you're developing, the Repertoire middleware ensures that any javascript
+and css you've required appear seamlessly in your own application's url space--
+even though they're loaded from elsewhere. You can step through javascript
+code file by file, just as it appears in your application and gems. When a
+javascript source file changes, it is reloaded automatically and its
+dependencies re-analyzed.
+
+Finally, when you have packaged your app for production use, the asset
+software bundles and compresses javascripts and stylesheets, and copies any
+associated binary assets into your application's public directory. This way,
+all the assets will be served directly by your web server, only one compressed
+javascript and one css file are downloaded to the client. This yields a much
+more responsive user experience.
+
+If you want to distribute your javascript component for use in non-ruby frame-
+works, repertoire assets can also be used to build and bundle the files.  This
+gives you the flexibility of developing and deploying components easily for use
+within ruby frameworks, but also distributing your code to a wider audience.
+
+
+
+*Architecture*
+
+The software consists of two components:
+
+(1) A preprocessor that assembles javascript based on dependencies in your
+code, much like C's #include directive or ruby's "require" method. For
+example, you could require the "shapes" javascript library from a ruby gem by
+including '//= require <shapes>' your javascript source. The preprocessor will
+find the library and load it and its depedencies into your web page before
+your own code, in the proper order. If a given code library has already been
+sourced, it is not loaded again.
+
+This is accomplished by compiling an ordered manifest of all the javascript
+files required by your code, and then inserting the appropriate <script> and
+<link> tags into your pages' html. Because it uses a rack filter, the system
+is largely transparent to your application. Whether it's written in Rails,
+Merb, Sinatra, or another ruby web framework, the javascript and css will
+still work.
+
+
+(2) A pair of rack filters: one that intercepts http requests for assets in
+the manifest and serves them directly, and another that inserts the manifest
+into html pages right before they are served. In a production environment, the
+filters collect all of your application's required assets, compress those they
+can, and cache them in your application's public asset directory.
+
+
+
+*Preparing your application*
+
+You can use javascript components packaged with Repertoire Assets in any ruby
+web application based on Rack (this includes Rails, Merb, Sinatra and others).
+
+The javascript gem libraries can either be bundled with your application, or
+reside in the system rubygems repository. Likewise, the repertoire-assets gem
+may be in either place.
+
+For Rails 3.0, no configuration is necessary for development use.  Production
+environments require a single line of configuration.  See the INSTALL file
+for details.
+
+
+
+*Importing Javascript Libraries and Files*
+
+Repertoire-assets works by scanning a set of javascript source files in your
+application on startup and locating any required libraries (and their
+dependents) on the ruby load path. In development mode, the files will be
+re-scanned whenever a dependency is modified.
+
+Files are sourced in the following order:
+
+  <app>/public/javascripts/application.js
+  <app>/public/javascripts/*.js
+
+In these files, you can use preprocessor directives similar to C's:
+
+  //= require <shapes>                         /* search for a library shapes.js in gems load path */
+  //= require "drawing/scene"                  /* load ./drawing/scene.js relative to the current file */
+  //= require "../stylesheets/red-theme.css"   /* load css relative to the current file */
+
+The relevant <script> and <link> tags for any file you 'require' are added to
+your application's outgoing html automatically. Any dependencies are added
+in logical order.
+
+
+
+*Structuring Your Application's Javascript*
+
+It's best to establish a layout similar to most ruby or C code, where files
+require any dependencies at their head and a single application file starts
+everything off.
+
+For example, a paint application might look like:
+
+  <app>/public/javascripts/application.js:
+    //= require "drawing/scene"
+    //= require "accounts/user"
+    ...
+  <app>/public/javascripts/drawing/graph.js
+  <app>/public/javascripts/drawing/scene.js:  
+    //= require "graph"
+    ...
+  <app>/public/javascripts/accounts/user.js
+
+The asset preprocessor will figure out what order to load files, so you don't
+have to. But when you debug using Firebug or Webkit, your code will still
+appear in the file layout you're used to rather than jumbled together
+(something other javascript asset bundlers commonly do).
+
+
+
+*Developing Javascript and CSS Gem Components*
+
+Repertoire assets javascript libraries are ordinary rubygems packages. Say
+you wanted to create a javascript drawing package to support the painting
+application above. Here is the suggested gem source structure:
+
+  superdraw/README
+  superdraw/Rakefile                                    # see below
+  superdraw/superdraw.gemspec                           # generated by Rakefile
+  superdraw/lib/superdraw.rb                            # empty file (required for rubygems)
+  superdraw/public/javascripts
+  superdraw/public/javascripts/superdraw.js             # the superdraw library file
+  superdraw/public/javascripts/superdraw/circle.js
+  superdraw/public/javascripts/superdraw/polyhedron.js
+  superdraw/public/javascripts/superdraw/square.js
+  superdraw/public/stylesheets/superdraw.css            # required css
+  superdraw/public/images/superdraw/anchor.png          # provided image assets 
+  superdraw/public/images/superdraw/crosshairs.png
+  superdraw/LICENSE
+  superdraw/TODO
+
+As you can see, a Javascript component gem has the same structure as a Rails
+or Merb application. You may also include ruby library code in lib/ if you wish.
+
+The asset loader will find any library in $LOAD_PATH/../public/javascripts/*.js,
+in this case 'superdraw.js'.  This file might look something like the following:
+
+  //= require "superdraw/circle"                      # load private source files
+  //= require "superdraw/polyhedron"
+  //= require "superdraw/square"
+  //= require "../stylesheets/superdraw.css"          # the library's main css file
+  //= provide "../images/splashscreen.jpeg"           # ancillary assets
+  //= provide "../images/superdraw/**/*"
+
+If the circle, polyhedron or square files use other javascript libraries --
+say, the Processing javascript framework -- they will include require
+directives of their own.
+
+The provide directive is used to specify additional assets that should be
+available in the host application's url space. You can reference these files
+in your css, and any relative urls will be rewritten appropriately when the
+css files are bundled together and moved to a new location in the host app.
+
+Unix-style file globs can be used in any require or provide statement, as seen
+in the final provide statement above. Also, you can combine search and
+relative file paths to load sub-libraries (e.g. 'require <superdraw/circle>').
+
+Keep in mind that files under /public may appear in your host app's URL
+space. Hence, it is advantageous to namespace your materials in directories
+named after your library (e.g. /images/superdraw/circle.png rather than
+/images/circle.png).
+
+For security reasons, the system will never serve a file that was not
+explicitly required or provided.
+
+If you are using Rails and would like to preview the manifest or generate
+digests by hand, use 'rake assets:list' and 'rake assets:build'.
+
+
+
+*Debugging Javascript Dependencies*
+
+When your web application starts up, the asset manager logs a record of which
+javascript and css files have been required, by which libraries, and what url
+each is served at.  For example:
+
+~ Requiring /javascripts/application.js (/Users/yorkc/facet-example-app/public/javascripts/application.js)
+~ Requiring   /stylesheets/master.css (/Users/yorkc/facet-example-app/public/stylesheets/master.css)
+~ Requiring   /javascripts/rep.faceting.js (repertoire_faceting-0.3.4)
+~ Requiring     /javascripts/jquery.js (jquery-1.3.2)
+~ Requiring       /javascripts/jquery/jquery-1.3.2.js (jquery-1.3.2)
+~ Requiring     /stylesheets/rep.faceting.css (repertoire_faceting-0.3.4)
+~ Providing     /images (repertoire_faceting-0.3.4)
+~ Requiring   /javascripts/rep.protovis-facets.js (repertoire_faceting-0.3.4)
+~ Requiring     /javascripts/protovis.js (repertoire_faceting-0.3.4)
+~ Requiring       /javascripts/protovis/protovis-d3.1.js (repertoire_faceting-0.3.4)
+~ Assets processed: 1 source files, 5 libraries available, 10 assets provided, 9 files in manifest
+
+Requiring a file that cannot be found is a fatal error, as in Ruby or C. If
+two libraries are found that satisfy a requirement, you will be informed of
+the conflict and told which one is being used.
+
+
+*Deployment Options*
+
+The following options are available for production configurations.
+
+   - precache [false]                   # copy and bundle assets into host application?
+   - compress [false]                   # compress bundled javascript & stylesheets? (implies :precache)
+   - disable_rack_assets [false]               # don't interpolate <script> and <link> tags
+   - path_prefix     ['']                      # prefix for all generated urls
+
+In general, 'compress' is preferred. This copies all binary assets into
+your host application, bundles together all required javascript and css into
+files named '/digest.js' and '/digest.css', and compresses these files using
+YUI compressor.  Use 'precache' if you do not want to compress the files.
+
+In both cases, the asset mirroring middleware is disabled, and your app's
+webserver serves all assets directly from the filesystem.
+
+If desired, you may also disable the <script> and <link> middleware in your
+production install while still precaching and compressing all assets. Set the
+'disable_rack_assets' configuration option to true, and add the following to
+your html header:
+
+<link rel='stylesheet' type='text/css' href='/digest.css'/> 
+<script language='javascript' type='text/javascript' src='/digest.js'></script>
+
+Note, however, that the server performance gain from 'disable_rack_assets' is
+minimal.

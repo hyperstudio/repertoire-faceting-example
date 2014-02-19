@@ -32,4 +32,5 @@ RepertoireFacetingExample::Application.configure do
 
   # Tell asset server prefix of app
   # config.repertoire_assets.path_prefix = '/facets'
+  config.repertoire_assets.compress = true
 end
