@@ -16,8 +16,8 @@ src/*
 .hgignore
 .hg/*
 .svn/*
-bin/*
 gems/*
+bin/*
 !gems/cache/
 public/digest.*
 data/citizens.sql

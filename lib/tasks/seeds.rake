@@ -5,14 +5,15 @@
 #
 # File creates a large database of fictional U.S. citizens with statistically-appropriate names and geography
 #
-# N.B.  Creating the demo database will take approximately 30 mins.  Your postgres server should be tuned for a large shared memory
+# N.B.  Creating the demo database may take approximately 30 mins.  Your postgres server should be tuned for a large shared memory
 #       -- see the postgresql wiki at http://www.postgresqldocs.org/wiki/Tuning_Your_PostgreSQL_Server .  (However, the
 #       demo will run without tuning.)
 # 
 #
 
 
-SAMPLE_SIZE = 1000000
+SAMPLE_SIZE = 50000        # Invoke with larger numbers to show scalability of signature data type:
+                           # e.g. 'rake db:seeds:generate[1000000]'
 
 class Frequencies
   attr_reader :data
@@ -58,7 +59,8 @@ namespace :db do
     config    = Rails.configuration.database_configuration[Rails.env]
     
     desc "Generate supplementary seed info into data/ directory"
-    task :generate do
+    task :generate, [:count] do |t, args|
+      count = (args[:count] || SAMPLE_SIZE).to_i
       surnames = Frequencies.new [["SMITH", 2501922],
        ["JOHNSON", 2014470],
        ["WILLIAMS", 1738413],
@@ -7835,7 +7837,7 @@ namespace :db do
       File.open('data/citizens.sql', 'w') do |f|
         f.puts "BEGIN;"
         f.puts "COPY citizens (first_name, last_name, gender, occupation, birth_city, birth_state, birthdate, social_security) FROM stdin;"
-        SAMPLE_SIZE.times do |i|
+        count.times do |i|
           gender     = genders.next[0]
 
           fields = []

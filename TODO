@@ -5,20 +5,11 @@ known bugs:
 
 - nested facets - when a child is named same as parent, it deselects it rather than refining
 
+heroku migration:
 
-
-rails3 migration:
-
-- start up in console									DONE
-- start up in server									DONE
-- verify repertoire-assets injection					DONE
-- console access to example data models (CRUD)			DONE
-- repertoire-faceting update: model finder methods
-- console access to example model facets
-- repertoire-faceting: unit tests running
-- server access to example model facets
-- documentation revision
-
-- fix routes for visualization
-- highlight search term in text
-- done
+- check still runs on rails 3.2.11 [ cfrp ], 
+                            3.2.14 [ us-iran ], 
+                            3.2.16 [ annotation studio ], 
+                            4.0.2 [ repertoire-faceting-example ] 
+- check repertoire-assets on heroku
+- create heroku instance for app

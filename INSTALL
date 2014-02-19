@@ -1,20 +1,24 @@
 === Running the Repertoire Faceting Demo
 
-Rails 3 recommendation is to use database-specific schema dump and seeding files
-unless your application is explicitly cross-database.
+Rails recommendation is to use database-specific schema dump and seeding files
+unless your application is explicitly cross-database. However, for clarity
+migrations are used in the demo application.
 
-$ bundle install
-$ rake db:faceting:build                 { sudo will prompt your password }
-$ rake db:seeds:generate
+Build the faceting library and install it in your PostgreSQL database server.
 
-The file db/development_structure.sql represents the current database schema, 
-after all migrations have run (just like schema.db).  Source it and the seed 
-data:
+$ rake db:faceting:signature:build     { sudo will prompt your password }
+
+Set up the demo's database and load the faceting extensions.
 
 $ rake db:create
-$ (cat db/*.sql data/*.sql) | psql -Upostgres repertoire_faceting_example
+$ rake db:migrate
+
+Load with sample data (this can take a while... get a coffee).
+
+$ rake db:seeds:generate               { creates data/citizens.sql }
+$ cat data/*.sql | psql -Upostgres repertoire_faceting_example
 
 And add the facet indices and run:
 
 $ rake reindex
-$ bundle exec rails s                    { see http://localhost:3000/nobelists }
+$ bundle exec rails s                  { see http://localhost:3000/nobelists }

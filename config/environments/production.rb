@@ -46,7 +46,10 @@ RepertoireFacetingExample::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-  
+
+  # For Rails 4.0
+  config.eager_load = true
+
   config.repertoire_assets.path_prefix = '/facets'
   config.repertoire_assets.compress = true
 end

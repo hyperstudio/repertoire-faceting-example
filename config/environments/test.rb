@@ -8,7 +8,7 @@ RepertoireFacetingExample::Application.configure do
   config.cache_classes = true
 
   # Log error messages when you accidentally call methods on nil.
-  config.whiny_nils = true
+  # config.whiny_nils = true                                      REMOVED IN RAILS 4.0
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -24,7 +24,13 @@ RepertoireFacetingExample::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  
+
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Raise exception on mass assignment protection for Active Record models
+  # config.active_record.mass_assignment_sanitizer = :strict      REMOVED IN RAILS 4.0
+
+  # For Rails 4.0
+  config.eager_load = false
 end

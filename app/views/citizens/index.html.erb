@@ -11,7 +11,7 @@ $().ready(function() {
   repertoire.defaults = { path_prefix: '<%= config.repertoire_assets.path_prefix %>' };
   
   $("#search").tipTip({content: "Combine faceted browsing with enterprise-level full-text search"});
-  $(".facet").tipTip({content: "Built-in facet count indices allow your browser to scale up to 1,000,000 items without any change in code", defaultPosition:"right"});
+  $(".facet").tipTip({content: "Built-in facet count indices allow your browser to scale up to 1,000,000 items without any change in code (30,000 when not using our PostgreSQL extensions)", defaultPosition:"right"});
   $(".nested_facet").tipTip({content: "Index hierarchical and other facets using familiar procedures", defaultPosition:"left"});
 
   $('#citizens').facet_context(function() {
