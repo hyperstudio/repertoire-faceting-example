@@ -19,7 +19,7 @@
 
 
 
-def range(items) 
+def range(items)
   items.max - items.min
 end
 
@@ -38,7 +38,7 @@ all_y = []
 // features with the new set of geometries, colored into a choropleth map
 //
 self.render = function(counts) {
-  
+
   // create a set of choropleth KML features based on the facet value counts
   // N.B. this function assumes the data is already in descending count order!
   // format of facet values: [ key, count, label, KML ]
@@ -53,17 +53,17 @@ self.render = function(counts) {
     var label       = value[2];
     var geomKml     = value[3];
     var centerKml   = value[4];
-    
+
     // if server is misindexed, skip the record
     if (!facet_value || !label || !geomKml || !centerKml) {
       console.log('Error: ' + facet_value + ':' + count + ':' + label + ':' + centerKml + ':' + geomKml.length);
       return; // throw "Bad facet feature: " + facet_value;
     }
-    
+
     // compute the weighted color for this quantile
     var quantile = options.quantiles.categories - Math.ceil(index / quantile_size);
     var fraction = Math.sqrt(count / total_count);
-    
+
     // create and add placemark for kml
     var label     = label + '  ' + count
     var placemark = createPlacemark(facet_value, label, centerKml, quantile, fraction, geomKml);
@@ -75,12 +75,12 @@ function styleKml(index, iconScale) {
   var style_id = 'quantile' + index;
   var fraction = index / options.quantiles.categories;
   var color    = rampColor(options.quantiles.low, options.quantiles.high, fraction);
-  
+
   var kml    = '<Style id="' + style_id + '_normal">' +
                 '<IconStyle><Icon></Icon></IconStyle>' +
                 '<LabelStyle><color>00ffffff</color></LabelStyle>' +
                 '<LineStyle>' +
-                '<color>' + options.style.line.color + '</color>' + 
+                '<color>' + options.style.line.color + '</color>' +
                 '<width>' + options.style.line.width + '</width>' +
                 '</LineStyle>' +
                 '<PolyStyle><color>' + color + '</color></PolyStyle>' +
@@ -89,7 +89,7 @@ function styleKml(index, iconScale) {
                 '<IconStyle><Icon></Icon></IconStyle>' +
                 '<LabelStyle><color>' + options.style.label.color + '</color></LabelStyle>' +
                 '<LineStyle>' +
-                '<color>' + options.style.line.color + '</color>' + 
+                '<color>' + options.style.line.color + '</color>' +
                 '<width>' + options.style.line.width + '</width>' +
                 '</LineStyle>' +
                 '<PolyStyle><color>' + color + '</color></PolyStyle>' +
@@ -112,8 +112,8 @@ function styleKml(index, iconScale) {
 //
 function createPlacemark(id, label, labelKml, quantile, iconScale, geomKml) {
   var style_id = 'quantile' + quantile;
-  
-  var kmlDoc = 
+
+  var kmlDoc =
            '<?xml version="1.0" encoding="UTF-8"?>' +
            '<kml xmlns="http://earth.google.com/kml/2.2">' +
            '<Document>' +
@@ -146,7 +146,7 @@ function clearFeatures() {
 // utility function to calculate intermediate color values
 //
 function rampColor(low, high, fraction) {
-  
+
   var pad2 = function (s) {
     return ((s.length < 2) ? '0' : '') + s;
   }
@@ -158,7 +158,7 @@ function rampColor(low, high, fraction) {
     var foo =  pad2(Math.floor((c2 - c1) * fraction + c1).toString(16));
     return foo;
   }
-  
+
   // following algorithm is borrowed from Google Earth extensions library
   return blendHexComponent(low.substr(0,2), high.substr(0,2)) +
          blendHexComponent(low.substr(2,2), high.substr(2,2)) +
@@ -179,7 +179,7 @@ style:     {
 
 -- Add column with complete nesting to NAICS for display
 ALTER TABLE naics ADD COLUMN display_title TEXT[];
-UPDATE naics SET display_title = 
+UPDATE naics SET display_title =
   (SELECT array_agg(substring(n2.title from E'\[0-9]+ (.*)')) FROM
     (SELECT title FROM naics n1 WHERE position(n1.code IN naics.code) = 1 ORDER BY length(code)) AS n2);
 
@@ -188,8 +188,8 @@ UPDATE naics SET display_title =
 	  SELECT naics.code AS naics, display_title AS label, signature(_packed_id) FROM businesses, naics
 	  WHERE businesses.naics like (naics.code || '%')
 	  GROUP BY naics.code, naics.display_title
-	
-	
+
+
 		SELECT recreate_table('_businesses_naics_facet', $$
 		  SELECT naics.code AS naics, naics.display_title AS label, collect(signature) AS signature
 		  FROM naics, (SELECT naics, signature(_packed_id) FROM businesses GROUP BY naics) AS items

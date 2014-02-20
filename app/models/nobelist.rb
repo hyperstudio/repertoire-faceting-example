@@ -1,10 +1,10 @@
 class Nobelist < ActiveRecord::Base
   include Repertoire::Faceting::Model
-  
+
   # see 'repertoire-faceting/test/fixtures/nobelists.sql'
 
   has_many :affiliations
-  
+
   facet :discipline
   facet :nobel_year, order('nobel_year')
   facet :degree, joins(:affiliations).group('affiliations.degree')

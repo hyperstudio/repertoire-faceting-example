@@ -11,7 +11,7 @@ class NobelistsController < ApplicationController
     @search = params[:search] || ''
     render
   end
-  
+
   # webservice bases
 
   protected
@@ -19,5 +19,5 @@ class NobelistsController < ApplicationController
     search = "%#{params[:search]}%"
     Nobelist.where(["name ilike ?", search])
   end
-  
+
 end

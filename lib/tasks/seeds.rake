@@ -8,7 +8,7 @@
 # N.B.  Creating the demo database may take approximately 30 mins.  Your postgres server should be tuned for a large shared memory
 #       -- see the postgresql wiki at http://www.postgresqldocs.org/wiki/Tuning_Your_PostgreSQL_Server .  (However, the
 #       demo will run without tuning.)
-# 
+#
 #
 
 
@@ -33,7 +33,7 @@ class Frequencies
 
   def search(target, low, high)
     mid = low+((high-low)/2).to_i
-    return nil if low > high 
+    return nil if low > high
 
     if target < pos(mid).begin
       return search(target, low, mid-1)
@@ -57,7 +57,7 @@ end
 namespace :db do
   namespace :seeds do
     config    = Rails.configuration.database_configuration[Rails.env]
-    
+
     desc "Generate supplementary seed info into data/ directory"
     task :generate, [:count] do |t, args|
       count = (args[:count] || SAMPLE_SIZE).to_i

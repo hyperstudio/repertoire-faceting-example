@@ -8,9 +8,7 @@ Bundler.require(:default, Rails.env)
 
 module RepertoireFacetingExample
   class Application < Rails::Application
-    # Use repertoire-assets rather than sprockets to process assets
-    config.assets.enabled = false
-    
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -41,10 +39,10 @@ module RepertoireFacetingExample
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-    
+
     # Send json without class name decorations (for visualization widget)
     config.active_record.include_root_in_json = false
-    
+
     # Use SQL instead of Active Record's schema dumper when creating the test database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types

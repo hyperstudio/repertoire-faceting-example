@@ -18,6 +18,6 @@ src/*
 .svn/*
 gems/*
 !gems/cache/
-public/digest.*
 data/citizens.sql
 .bundle
+vendor/bundle

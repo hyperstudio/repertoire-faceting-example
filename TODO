@@ -7,9 +7,9 @@ known bugs:
 
 heroku migration:
 
-- check still runs on rails 3.2.11 [ cfrp ], 
-                            3.2.14 [ us-iran ], 
-                            3.2.16 [ annotation studio ], 
-                            4.0.2 [ repertoire-faceting-example ] 
+- check still runs on rails 3.2.11 [ cfrp ],
+                            3.2.14 [ us-iran ],
+                            3.2.16 [ annotation studio ],
+                            4.0.2 [ repertoire-faceting-example ]
 - check repertoire-assets on heroku
 - create heroku instance for app

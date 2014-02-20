@@ -10,9 +10,8 @@
 <script>
 $().ready(function() {
   // only necessary if using sub-uris
-  rack_prefix         = '<%= config.repertoire_assets.path_prefix %>';
-  repertoire.defaults = { path_prefix: rack_prefix };
-  
+  repertoire.defaults = { path_prefix: '' };
+
   $("#discipline").tipTip({content: "Over-ride default widgets for rich, drillable visualizations", defaultPosition: "right"});
   $("#nobel_year").tipTip({content: "Protovis and Processing provide opportunities for novel visualizations of your data", defaultPosition: "right"});
   $("#birth_decade").tipTip({content: "Or display your facet data using standard charting techniques", defaultPosition: "left"});
@@ -20,14 +19,14 @@ $().ready(function() {
   $("#timeline").tipTip({content: "Build novel visualizations for your results - e.g. using birthdate, nobel date, and death date.", defaultPosition: "top"});
 
   $('#nobelists').facet_context(function() {
-    return { 
-      search: $("#search").val() 
+    return {
+      search: $("#search").val()
     }
   });
-  
+
   // standard facets
   $('#birth_place').nested_facet();
-  
+
   // examples of visualization facets
   $('#discipline').bar_facet({ height: 230, width: 230 });
   $('#nobel_year').donut_facet({ height: 230, width: 230, thickness: 15 });
@@ -37,8 +36,8 @@ $().ready(function() {
   //   here we add a multivalued facet control that shows how many values are selected and allows a 'clear all'
   $('#degree').facet({
       injectors: {
-        '.title .controls' : function(self, data) { 
-          $(this).append('<span class="clear_control">(' + self.refinements(self.facet_name()).length + ') [x]</span>'); 
+        '.title .controls' : function(self, data) {
+          $(this).append('<span class="clear_control">(' + self.refinements(self.facet_name()).length + ') [x]</span>');
         }
       },
       handlers: {
@@ -50,9 +49,9 @@ $().ready(function() {
         }
       }
     });
-    
+
     // example of a results widget that injects its own content (in this case, a visualization of nobelists)
-    $('#timeline').results({ 
+    $('#timeline').results({
       type: 'json',
       injectors: {
         'div': function(self, nobelists) {
@@ -60,11 +59,11 @@ $().ready(function() {
         }
       }
     });
-    
+
     // regular list view
     $('#results').results({ type: 'html' });
     $('#results').hide();
-    
+
     // script to toggle results views
     $('#timeline').click(function() {  $('#results').show(); $('#timeline').hide(); });
     $('#results').click(function() {   $('#results').hide(); $('#timeline').show(); });
@@ -74,7 +73,7 @@ $().ready(function() {
 
 <form>
 Search: <input id='search' name='search' type='text' value='<%= @search %>'/>
-</form> 
+</form>
 
 <div id='info'>Repertoire Faceting - Widget Extension features</div>
 

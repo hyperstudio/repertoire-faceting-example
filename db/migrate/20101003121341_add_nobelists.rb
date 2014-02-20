@@ -1,6 +1,6 @@
 class AddNobelists < ActiveRecord::Migration
   def self.up
-    
+
     create_table :nobelists do |t|
       t.text     :name,         :null => false
       t.datetime :birthdate
@@ -25,7 +25,7 @@ class AddNobelists < ActiveRecord::Migration
       t.text     :degree
       t.integer  :year
     end
-    
+
   end
 
   def self.down
