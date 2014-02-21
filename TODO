@@ -7,6 +7,10 @@ known bugs:
 
 heroku migration:
 
+- check migrations using bytea work on heroku
+
+- check packed_id being used in sql
+
 - check still runs on rails 3.2.11 [ cfrp ],
                             3.2.14 [ us-iran ],
                             3.2.16 [ annotation studio ],

@@ -6,7 +6,7 @@ migrations are used in the demo application.
 
 Build the faceting library and install it in your PostgreSQL database server.
 
-$ rake db:faceting:signature:build     { sudo will prompt your password }
+$ rake db:faceting:extensions:install     { sudo will prompt your password }
 
 Set up the demo's database and load the faceting extensions.
 

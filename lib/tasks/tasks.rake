@@ -3,7 +3,7 @@
 desc "Update the sample application's facet indices"
 task :reindex => :environment do
   ActiveRecord::Base.transaction do
-    Nobelist.update_indexed_facets([:degree, :discipline])
-    Citizen.update_indexed_facets([:gender, :occupation, :birth_place, :birthdate])
+    Nobelist.index_facets([:degree, :discipline])
+    Citizen.index_facets([:gender, :occupation, :birth_place, :birthdate])
   end
 end
