@@ -1,0 +1,223 @@
+=== Repertoire Faceting README
+
+Repertoire Faceting is highly scalable and extensible module for creating database-driven faceted browsers in Rails 3 & 4. It consists of three components: (1) a native PostgreSQL data type for constructing fast bitset indices over controlled vocabularies; (2) Rails model and controller mixins that add a faceting API to your existing application; and (3) a set of extensible javascript widgets for building user-interfaces. In only 10-15 lines of new code you can implement a fully-functional faceted browser for your existing Rails data models, with scalability out of the box to over 1,000,000 items.
+
+== Features
+
+Several features distinguish Repertoire Faceting from other faceting systems such as Simile Exhibit, Endeca, and Solr.
+
+Repertoire Faceting is an end-to-end solution that works with your existing database schema and Rails models. There's no need to munge your data into a proprietary format, run a separate facet index server, or construct your own user-interface widgets. (Conversely, however, your project needs to use Rails, PostgreSQL, and JQuery.)
+
+The module works equally well on small and large data sets, which means there's a low barrier to entry but existing projects can grow easily. In 'training wheels' mode, the module produces SQL queries for facet counts directly from declarations in your model so you can get a project up and running quickly. Then, after your dataset grows beyond a thousand items or so, just add indices as necessary. The module detects and uses these automatically, with no changes to your code or additional SQL necessary.
+
+Unlike some faceting systems, hierarchical vocabularies are supported out of the box. Using familiar SQL expressions you can decompose a date field into a drillable year / month / day facet. Or you can combine several columns into a single nested facet, for example from countries to states to cities.
+
+Both facet widgets and indexes are pluggable and extensible. You can subclass the javascript widgets to build drillable data visualizations, for example using bar graphs, donut and scatter charts or heat-maps to display the current search state and results.
+
+Similarly, you can write new facet implementations for novel data types, which automatically detect and index appropriate columns. For example, the module has been used to do facet value counts over GIS data points on a map, by drilling down through associated GIS layers using spatial logic relations.
+
+For an out-of-the box example using Repertoire Faceting, which demonstrates the module's visualization and scalability features, see the example application (http://github.com/yorkc/repertoire-faceting-example).
+
+
+== Installation
+
+See the INSTALL document for a description of how to install the module and build a basic faceted browser for your existing Rails app.
+
+
+== Running unit tests
+
+You can run the unit tests from the module's root directory. You will need a local PostgreSQL superuser role with your unix username (use 'createuser -Upostgres').
+
+  $ bundle install
+  $ rake db:faceting:build    { sudo will prompt for your password }
+  $ rake db:create
+  $ rake test
+  
+
+== Generating documentation
+
+All API documentation, both ruby or javascript, is inline.  To generate:
+
+  $ rake doc
+
+For the javascript API documentation, please look in the source files.
+
+
+== Faceting declarations (Model API)
+
+See Repertoire::Faceting::Model::ClassMethods
+
+
+== Faceting webservices (Controller API)
+
+See Repertoire::Faceting::Controller
+
+
+== Facet widgets / HTML (User Interface API)
+
+See rep.faceting.js inline documentation in the source tree
+
+
+== Custom facet implementations
+
+See Repertoire::Faceting::Facets::AbstractFacet
+
+
+== Updating Facet Indices
+
+It is very useful to create a rake task to update your application's indices. In the project's rake task file:
+
+  task :reindex => :environment do
+    Painting.index_facets([:genre, :era])
+  end
+  
+Then run 'rake reindex' whenever you need to update indices manually.
+
+*static* If the facet data is unchanging, use a rake task like the one above to create indices manually while developing or deploying.
+
+*crontab* The easiest way to update indices periodically is to run a rake task like the one above via a UNIX tool such as launchd, periodic, or crontab. See the documentation for your tool of choice.
+
+
+== Deployment
+
+Because repertoire-faceting depends on a native shared library loaded by the PostgreSQL server, the first time you deploy you will need to build and install the extension.
+
+  <server>$ bundle install --deployment
+  <server>$ export RAILS_ENV=production
+  <server>$ rake db:faceting:build
+  <server>$ # ... from here, follow normal deployment procedure
+
+
+== How the module works
+
+It is helpful to think of faceted data as a set of model items categorised by one or more controlled vocabularies, as this eliminates confusion from the start. (A faceted classification is neither object-oriented nor relational, though it can be represented in either.) For example, one might categorise Shakespeare's plays by a controlled vocabulary of genres -- comedy, history, tragedy, or romance. Counting the total number of plays for each vocabulary item in this "genre" facet, we see 13 comedies, 10 histories, 10 tragedies, and 4 romances.
+
+There are three direct implementations for faceted classifications like this in an SQL database. The controlled vocabulary can be listed explicitly in a separate table, or implicit in the range of values in a column on the central table (for single-valued facets) or on a join table (for multi-valued facets). Repertoire Faceting supports all of these configurations.
+
+*1:* Explicit controlled vocabulary, multiple valued facet
+
+    genres            plays_genres            plays                      
+  ----+---------    ---------+----------    ----+------------------+---------
+   id | name         play_id | genre_id      id | title            | date ...
+  ----+---------    ---------+----------    ----+------------------|---------
+    1 | comedy             1 | 4              1 | The Tempest      |
+    2 | tragedy            2 | 3              2 | Henry 4, pt 1    |
+    3 | history            3 | 3              3 | Henry 4, pt 2    |
+    4 | romance            4 | 3              4 | Henry 5          |
+                           5 | 1              5 | As You Like It   |
+                           6 | 1              6 | Comedy of Errors |
+                           7 | 2              7 | Macbeth          |
+                           8 | 2              8 | Hamlet           |
+                               ...                ....
+
+*2:* Implicit vocabulary, multiple valued facet
+
+    plays_genres            plays                      
+  ---------+----------    ----+------------------+---------
+   play_id | genre_id      id | title            | date ...
+  ---------+----------    ----+------------------|---------
+         1 | romance        1 | The Tempest      |
+         2 | history        2 | Henry 4, pt 1    |
+         3 | history        3 | Henry 4, pt 2    |
+         4 | history        4 | Henry 5          |
+         5 | comedy         5 | As You Like It   |
+         6 | comedy         6 | Comedy of Errors |
+         7 | tragedy        7 | Macbeth          |
+         8 | tragedy        8 | Hamlet           |
+             ...                ....
+
+*3:* Implicit vocabulary, single valued facet
+  
+    plays                      
+  ----+-----------------+---------+---------
+   id | title           | genre   | date ...
+  ----+-----------------|---------+---------
+   1 | The Tempest      | romance |
+   2 | Henry 4, pt 1    | history |
+   3 | Henry 4, pt 2    | history |
+   4 | Henry 5          | history |
+   5 | As You Like It   | comedy  |
+   6 | Comedy of Errors | comedy  |
+   7 | Macbeth          | tragedy |
+   8 | Hamlet           | tragedy |
+       ...                ....                                                
+
+For all of these representations, Repertoire Faceting works by constructing an inverted bitset index from the controlled vocabulary to your central model. Each bit represents a distinct model row (plays.id in this example). 1 indicates the play is in the category, and 0 that it is not:
+
+    _plays_genre_facet
+  ---------+-----------
+    genre  | signature 
+  ---------+-----------
+   comedy  | 00001100
+   history | 01110000
+   romance | 10000000
+   tragedy | 00000011
+
+From these bitset "signatures", Repertoire Faceting can easily count the number of member plays for each category, even in combination with other facets and a base query. For example, the bitset signature for all plays whose title contains the search word "Henry" is 0110000. Masking this (via bitwise "and") with each signature in the genre index above, we see that there are 2 histories that match the base search - Henry 4 parts 1 & 2 - a none in the other categories:
+
+  ---------+------------------
+    genre  | signature & base 
+  ---------+------------------
+   comedy  | 00000000         
+   history | 01100000         
+   romance | 00000000
+   tragedy | 00000000
+
+Refinements on other facets are processed similarly, by looking up the relevant bitset signature for the refined value, and masking it against each potential value in the facet to be enumerated.
+
+As you may have noticed, this scheme depends on play ids being sequential. Otherwise many bits corresponding to no-existent ids are wasted in every signature. To address this issue, Repertoire Faceting examines the projected wastage in constructing bitset signatures from the primary key id of your model table. If more than a predefined amount (e.g. 15%) of the signature would be wasted, the module instead adds a new column of sequentially packed ids that are used only for faceted searches. When the model's facets are re-indexed, the ids are examined and repacked if too much space is wasted.
+
+References on faceted search:
+
+- http://flamenco.berkeley.edu/pubs.html
+- http://en.wikipedia.org/wiki/Controlled_vocabulary
+
+
+== Known issues
+
+- Running the unit tests issues warnings about a circular require. These can be ignored.
+
+
+== PostgreSQL Faceting API
+
+Several bindings for the in-database faceting API are provided. In order of capability, they are:
+
+- signature        C language, requires superuser permissions
+- bytea            Javascript language, requires plv8 extension
+- varbit           No language or superuser requirements
+
+In general, if you have superuser permissions you should build and install the C-language (signature) API, as it is more scalable than the others, at no cost.
+
+All the Repertoire Faceting APIs add functionality for bitwise operations and population counts to PostgreSQL. For API details, see the ext directory.
+
+Signature: an auto-sizing bitset with the following functions
+
+- count(a)            => { count of 1s in a }
+- contains(a, i)      => { true if the ith bit of a set }
+- members(a)          => { set of integers corresponding to set bits }
+
+- sig_in, sig_out     => { mandatory I/O functions }
+- sig_and(a, b)    	  => a & b
+- sig_or(a, b)     	  => a | b
+- sig_xor(a)       	  => ~a
+- sig_length(a)	      => { number of bits in a }
+- sig_min(a)       	  => { lowest 1 in a, a.length }
+- sig_get(a, i)       => { ith bit of a, or 0 }
+- sig_set(a, i, n)    => { sets ith bit of a to n }
+- sig_resize(a, n)    => { resizes a to hold n bits }
+
+Bitwise signature operators:  &, |
+
+Bitwise aggregates:
+
+- signature(int)      => assemble ints into a signature
+- collect(signature)  => 'or' signature results together
+- filter(signature)   => 'and' signature results together
+
+Helper functions:
+
+- wastage(INT) -> REAL
+
+Aggregator that examines a table's primary key column, checking what proportion of signature bits constructed from the table would be wasted. If the proportion of wasted bits to valid bits is high, you should consider adding a new serial column.
+
+The Rails API introspects signature wastage before any facet indexing operation, and adds or removes a new serial column (called _packed_id) as necessary.
