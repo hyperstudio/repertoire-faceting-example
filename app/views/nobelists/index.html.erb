@@ -6,9 +6,7 @@ $().ready(function() {
   repertoire.defaults = { path_prefix: '' };
 
   $('#nobelists').facet_context(function() {
-    return {
-      search: $("#search").val()
-    }
+    return { search: $("#search").val() }
   });
   $('.facet').facet();
   $('.nested_facet').nested_facet();
@@ -21,6 +19,10 @@ $().ready(function() {
   $("#birth_place").tipTip({content: "Hierarchical facet built from three database columns", defaultPosition: "left"});
   $("#birth_decade").tipTip({content: "Computed facet value derived from a database date column", defaultPosition: "left"});
   $("#results").tipTip({content: "Result tiles are formatted using standard Ruby templates", defaultPosition: "top"});
+
+  $('#nobelists').urls(function(json) {
+    $("#search").val(json.search);
+  });
 });
 </script>
 

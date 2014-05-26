@@ -67,6 +67,10 @@ $().ready(function() {
     // script to toggle results views
     $('#timeline').click(function() {  $('#results').show(); $('#timeline').hide(); });
     $('#results').click(function() {   $('#results').hide(); $('#timeline').show(); });
+
+    $('#nobelists').urls(function(json) {
+      $("#search").val(json.search);
+    });
 });
 
 </script>
