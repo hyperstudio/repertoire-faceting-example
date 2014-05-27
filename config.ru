@@ -2,3 +2,15 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 run RepertoireFacetingExample::Application
+
+require 'rack/cors'
+use Rack::Cors do
+
+  # allow all origins in development
+  allow do
+    origins '*'
+    resource '*',
+        :headers => :any,
+        :methods => [:get, :options]
+  end
+end

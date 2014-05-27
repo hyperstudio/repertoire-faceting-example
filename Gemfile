@@ -16,3 +16,5 @@ gem 'repertoire-faceting', '~>0.7', '>=0.7.1'
 gem 'unicorn'
 
 gem 'rails_12factor', group: :production
+
+gem 'rack-cors', :require => 'rack/cors'
