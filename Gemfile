@@ -9,12 +9,14 @@ gem 'jquery-rails', '~>3.1', '>=3.1.0'
 
 # Hyperstudio gems
 
-gem 'repertoire-faceting', '~>0.7', '>=0.7.1'
+gem 'repertoire-faceting', '~>0.7', '>=0.7.1', :path => '/Users/yorkc/Desktop/MIT/repertoire-faceting'
 
 # Heroku deployment support
 
 gem 'unicorn'
 
 gem 'rails_12factor', group: :production
+
+# For cross-site ajax requests
 
 gem 'rack-cors', :require => 'rack/cors'

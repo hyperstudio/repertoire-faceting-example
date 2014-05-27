@@ -6,7 +6,7 @@ run RepertoireFacetingExample::Application
 require 'rack/cors'
 use Rack::Cors do
 
-  # allow all origins in development
+  # allow get requests from all origins
   allow do
     origins '*'
     resource '*',

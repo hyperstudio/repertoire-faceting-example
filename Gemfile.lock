@@ -1,3 +1,11 @@
+PATH
+  remote: /Users/yorkc/Desktop/MIT/repertoire-faceting
+  specs:
+    repertoire-faceting (0.7.1)
+      jquery-rails
+      pg (>= 0.11, < 0.18)
+      rails (>= 3.2.11, < 4.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -66,10 +74,6 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (10.3.2)
-    repertoire-faceting (0.7.1)
-      jquery-rails
-      pg (>= 0.11, < 0.18)
-      rails (>= 3.2.11, < 4.1)
     sprockets (2.12.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -100,5 +104,5 @@ DEPENDENCIES
   rack-cors
   rails (~> 4.0, >= 4.0.2)
   rails_12factor
-  repertoire-faceting (~> 0.7, >= 0.7.1)
+  repertoire-faceting (~> 0.7, >= 0.7.1)!
   unicorn
