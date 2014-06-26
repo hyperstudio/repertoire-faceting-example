@@ -12,10 +12,12 @@ class CitizensController < ApplicationController
   def results
     filter = params[:filter] || {}
     # over-ridden to limit results per page
-    @results = base.refine(filter).order(:last_name).limit(100).to_a
-    respond_to do |format|
-      format.html { render @results, :layout => false }
-      format.json { render :json => @results }
+    if stale?(base.facet_cache_key)
+      @results = base.refine(filter).order(:last_name).limit(100).to_a
+      respond_to do |format|
+        format.html { render @results, :layout => false }
+        format.json { render :json => @results }
+      end
     end
   end
 

@@ -27,7 +27,7 @@ class InstallFaceting < ActiveRecord::Migration
   def self.up
     if Rails.env.production?
       execute('CREATE SCHEMA facet')
-      execute( faceting_api_sql(:varbit, 'facet') )
+      execute( faceting_api_sql(:bytea, 'facet') )
     else
       execute('CREATE EXTENSION faceting')
     end
