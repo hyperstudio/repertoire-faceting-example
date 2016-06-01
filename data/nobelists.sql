@@ -157,3 +157,4 @@ COPY nobelists (id, name, birthdate, deathdate, birth_country, birth_state, birt
 -- PostgreSQL database dump complete
 --
 
+UPDATE nobelists SET created_at = now(), updated_at = now();

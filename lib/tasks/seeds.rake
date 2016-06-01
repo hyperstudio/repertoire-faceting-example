@@ -7856,6 +7856,7 @@ namespace :db do
         end
         f.puts "\\.\n"
         f.puts "UPDATE citizens SET _fulltext =  to_tsvector(first_name || ' ' || last_name || ' ' || occupation || ' ' || birth_city || ' ' || birth_state);"
+        f.puts "UPDATE citizens SET created_at = now(), updated_at = now();"
         f.puts "CREATE INDEX index_citizens_on__fulltext ON citizens USING gin(_fulltext);"
         f.puts "COMMIT;"
         f.puts "VACUUM ANALYZE;"
