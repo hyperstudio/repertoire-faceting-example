@@ -9,7 +9,7 @@ gem 'jquery-rails', '~>3.1', '>=3.1.0'
 
 # Hyperstudio gems
 
-gem 'repertoire-faceting', '~>0.7', '>=0.7.7'
+gem 'repertoire-faceting', '~>0.7', '>=0.7.8'
 
 # Heroku deployment support
 

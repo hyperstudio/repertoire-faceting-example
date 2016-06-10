@@ -95,7 +95,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (11.1.2)
-    repertoire-faceting (0.7.7)
+    repertoire-faceting (0.7.8)
       jquery-rails
       pg (>= 0.11, < 0.18)
       rails (>= 3.2.11)
@@ -124,11 +124,11 @@ DEPENDENCIES
   rack-cors
   rails (~> 4.2, >= 4.2.5)
   rails_12factor
-  repertoire-faceting (~> 0.7, >= 0.7.7)
+  repertoire-faceting (~> 0.7, >= 0.7.8)
   unicorn
 
 RUBY VERSION
    ruby 2.0.0p247
 
 BUNDLED WITH
-   1.12.4
+   1.12.5
