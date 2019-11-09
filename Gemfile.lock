@@ -63,7 +63,7 @@ GEM
       mini_portile2 (~> 2.1.0)
     pg (0.17.1)
     rack (1.6.11)
-    rack-cors (0.2.9)
+    rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.6)
