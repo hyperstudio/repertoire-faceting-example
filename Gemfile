@@ -1,9 +1,9 @@
 source "https://rubygems.org"
-ruby "2.2.0"
+ruby "2.3.7"
 
 # Rails gems
 
-gem 'rails', '~>4.2', '>=4.2.5'
+gem 'rails', '~>4.2', '>=4.2.11.3'
 gem 'pg', '~>0.17', '>=0.17.1'
 gem 'jquery-rails', '~>3.1', '>=3.1.0'
 
