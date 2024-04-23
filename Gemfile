@@ -5,7 +5,7 @@ ruby "2.3.7"
 
 gem 'rails', '~>4.2', '>=4.2.11.3'
 gem 'pg', '~>0.17', '>=0.17.1'
-gem 'jquery-rails', '~>3.1', '>=3.1.0'
+gem 'jquery-rails', '~>4.4'
 
 # Hyperstudio gems
 
